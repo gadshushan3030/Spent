@@ -21,9 +21,9 @@ import {
 } from "@/lib/formatters";
 
 const FILTER_OPTIONS: { value: TransactionKindFilter; label: string }[] = [
-  { value: "all", label: "All activity" },
-  { value: "income", label: "Income" },
-  { value: "expense", label: "Expenses" },
+  { value: "all", label: "כל הפעילות" },
+  { value: "income", label: "הכנסות" },
+  { value: "expense", label: "הוצאות" },
 ];
 
 export function TransactionsPage() {
@@ -86,7 +86,7 @@ export function TransactionsPage() {
   return (
     <>
       <PageHeader
-        title="Transactions"
+        title="עסקאות"
         meta={formatMonthLabel(selectedDate)}
         actions={
           <PeriodSelector

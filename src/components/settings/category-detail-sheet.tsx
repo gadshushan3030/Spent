@@ -113,8 +113,8 @@ function Body({
           <div className="min-w-0 flex-1">
             <SheetTitle>{category.name}</SheetTitle>
             <SheetDescription className="mt-0.5">
-              {category.kind === "expense" ? "Expense" : "Income"} category
-              {data?.parentName ? ` · in ${data.parentName}` : ""}
+              {category.kind === "expense" ? "קטגוריית הוצאה" : "קטגוריית הכנסה"}
+              {data?.parentName ? ` · ב${data.parentName}` : ""}
             </SheetDescription>
           </div>
         </div>
@@ -183,7 +183,7 @@ function BudgetSection({
   return (
     <section>
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        Budget
+        תקציב
       </div>
       <div className="mt-3 rounded-xl border border-border bg-card p-4">
         <div className="flex items-start justify-between gap-4">
@@ -192,12 +192,12 @@ function BudgetSection({
               htmlFor={`mode-${category.id}`}
               className="text-sm font-medium"
             >
-              {isBudgeted ? "Budgeted" : "Tracking only"}
+              {isBudgeted ? "עם תקציב" : "מעקב בלבד"}
             </Label>
             <p className="text-xs text-muted-foreground">
               {isBudgeted
-                ? "Show progress vs a monthly target."
-                : "Show spending without a target."}
+                ? "הצג התקדמות מול יעד חודשי."
+                : "הצג הוצאות ללא יעד."}
             </p>
           </div>
           <Switch
@@ -211,7 +211,7 @@ function BudgetSection({
 
         {isBudgeted ? (
           <div className="mt-4 space-y-1.5">
-            <Label htmlFor={`budget-${category.id}`}>Monthly budget</Label>
+            <Label htmlFor={`budget-${category.id}`}>תקציב חודשי</Label>
             <InputGroup prefix="₪">
               <Input
                 id={`budget-${category.id}`}
@@ -225,8 +225,7 @@ function BudgetSection({
             </InputGroup>
             {data ? (
               <p className="text-[11px] text-muted-foreground">
-                Spent ₪{Math.round(data.spent).toLocaleString("en-IL")} this
-                month
+                הוצאה ₪{Math.round(data.spent).toLocaleString("en-IL")} החודש
                 {data.vsTypical && data.vsTypical.typical > 0 ? (
                   <>
                     {" "}
@@ -259,20 +258,20 @@ function GroupSection({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
-      toast.success("Group updated");
+      toast.success("הקבוצה עודכנה");
     },
     onError: (err: Error) => {
       const reason = err.message;
       if (reason === "kind-mismatch") {
-        toast.error("Parent must be the same kind (expense or income).");
+        toast.error("האב חייב להיות מאותו סוג (הוצאה או הכנסה).");
       } else if (reason === "not-leaf-target") {
-        toast.error("Parent must be a top-level category.");
+        toast.error("האב חייב להיות קטגוריה ברמה עליונה.");
       } else if (reason === "child-has-children") {
         toast.error(
-          "Can't move a category that already has sub-categories under it."
+          "לא ניתן להזיז קטגוריה שכבר יש לה תת-קטגוריות."
         );
       } else {
-        toast.error("Couldn't update parent.");
+        toast.error("לא ניתן לעדכן את האב.");
       }
     },
   });
@@ -282,10 +281,10 @@ function GroupSection({
   return (
     <section>
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        Group
+        קבוצה
       </div>
       <div className="mt-3 rounded-xl border border-border bg-card p-4 space-y-2">
-        <Label>Parent group</Label>
+        <Label>קבוצת אב</Label>
         <Select
           value={current}
           onValueChange={(v) => {
@@ -298,9 +297,9 @@ function GroupSection({
             <SelectValue>
               {(value: string) =>
                 value === NONE_VALUE
-                  ? "(no parent)"
+                  ? "(ללא אב)"
                   : eligibleParents.find((p) => String(p.id) === value)?.name ??
-                    "(no parent)"
+                    "(ללא אב)"
               }
             </SelectValue>
           </SelectTrigger>
@@ -314,7 +313,7 @@ function GroupSection({
           </SelectContent>
         </Select>
         <p className="text-[11px] text-muted-foreground">
-          Use a parent group to roll spending up. Most users keep the defaults.
+          השתמש בקבוצת אב לצבירת הוצאות. רוב המשתמשים שומרים את ברירות המחדל.
         </p>
       </div>
     </section>
@@ -333,10 +332,10 @@ function DescriptionSection({ category }: { category: Category }) {
       updateCategoryDescription(category.id, next),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-      toast.success("Description saved");
+      toast.success("התיאור נשמר");
     },
     onError: (err: Error) => {
-      toast.error(err.message || "Couldn't save description");
+      toast.error(err.message || "שמירת התיאור נכשלה");
     },
   });
 
@@ -346,7 +345,7 @@ function DescriptionSection({ category }: { category: Category }) {
     if (trimmed === current) return;
     if (trimmed.length > DESCRIPTION_MAX) {
       toast.error(
-        `Description must be ${DESCRIPTION_MAX} characters or fewer.`
+        `התיאור חייב להיות עד ${DESCRIPTION_MAX} תווים.`
       );
       return;
     }
@@ -356,10 +355,10 @@ function DescriptionSection({ category }: { category: Category }) {
   return (
     <section>
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        AI hint
+        רמז AI
       </div>
       <div className="mt-3 rounded-xl border border-border bg-card p-4 space-y-2">
-        <Label htmlFor={`desc-${category.id}`}>Description</Label>
+        <Label htmlFor={`desc-${category.id}`}>תיאור</Label>
         <textarea
           id={`desc-${category.id}`}
           value={value}
@@ -367,12 +366,12 @@ function DescriptionSection({ category }: { category: Category }) {
           onBlur={handleBlur}
           rows={4}
           maxLength={DESCRIPTION_MAX}
-          placeholder={`Describe what belongs in "${category.name}" — and what does NOT.`}
+          placeholder={`תאר מה שייך ל-"${category.name}" — ומה לא.`}
           className="block w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           disabled={mutation.isPending}
         />
         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-          <span>Sent to the AI on every categorize.</span>
+          <span>נשלח ל-AI בכל סיווג.</span>
           <span className="tabular-nums">
             {value.length} / {DESCRIPTION_MAX}
           </span>

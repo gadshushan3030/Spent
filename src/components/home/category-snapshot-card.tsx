@@ -11,9 +11,9 @@ interface Props {
 export function CategorySnapshotCard({ items }: Props) {
   if (items.length === 0) {
     return (
-      <CardShell label="Top categories">
+      <CardShell label="קטגוריות מובילות">
         <div className="flex flex-1 items-center justify-center py-6 text-sm text-muted-foreground">
-          No category spend yet this month.
+          אין הוצאות לפי קטגוריה החודש.
         </div>
       </CardShell>
     );
@@ -21,8 +21,8 @@ export function CategorySnapshotCard({ items }: Props) {
 
   return (
     <CardShell
-      label="Top categories"
-      action={<CardAction href="/budget">All categories →</CardAction>}
+      label="קטגוריות מובילות"
+      action={<CardAction href="/budget">כל הקטגוריות ←</CardAction>}
     >
       <div className="flex flex-1 flex-col justify-between gap-4">
         {items.map((item) => (

@@ -19,33 +19,33 @@ export function NeedsAttentionCard({ data }: Props) {
 
   if (total === 0) {
     return (
-      <CardShell label="Needs attention">
+      <CardShell label="דורש תשומת לב">
         <div className="flex flex-1 items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--status-on-track)]" />
-          All clear.
+          הכל תקין.
         </div>
       </CardShell>
     );
   }
 
   return (
-    <CardShell label="Needs attention">
+    <CardShell label="דורש תשומת לב">
       <ul className="flex flex-1 flex-col gap-2">
         <Row
           icon={<CircleHelp className="h-4 w-4" />}
-          label="Uncategorized"
+          label="ללא קטגוריה"
           count={uncategorized}
           href="/transactions"
         />
         <Row
           icon={<AlertTriangle className="h-4 w-4" />}
-          label="Low AI confidence"
+          label="בטחון AI נמוך"
           count={lowConfidence}
           href="/transactions"
         />
         <Row
           icon={<Flag className="h-4 w-4" />}
-          label="Flagged for review"
+          label="מסומן לבדיקה"
           count={flagged}
           href="/transactions"
         />

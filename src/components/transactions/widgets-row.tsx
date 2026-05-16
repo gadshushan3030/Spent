@@ -49,13 +49,13 @@ function TopMerchants({ merchants, loading }: TopMerchantsProps) {
   return (
     <div className="h-full rounded-2xl border border-border bg-card p-5">
       <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-        Top merchants
+        ספקים מובילים
       </div>
       <div className="mt-3 space-y-2">
         {loading ? (
-          <div className="text-sm text-muted-foreground">Loading...</div>
+          <div className="text-sm text-muted-foreground">טוען...</div>
         ) : merchants.length === 0 ? (
-          <div className="text-sm text-muted-foreground">No merchants yet.</div>
+          <div className="text-sm text-muted-foreground">אין ספקים עדיין.</div>
         ) : (
           merchants.map((m, idx) => (
             <div
@@ -72,7 +72,7 @@ function TopMerchants({ merchants, loading }: TopMerchantsProps) {
               </div>
               <div className="flex shrink-0 items-center gap-3">
                 <span className="text-xs text-muted-foreground">
-                  {m.count} {m.count === 1 ? "txn" : "txns"}
+                  {m.count} עסקאות
                 </span>
                 <span className="font-serif text-base tabular-nums">
                   {formatCurrency(m.total)}
@@ -115,10 +115,10 @@ function PendingReview({ count, loading }: PendingReviewProps) {
     return (
       <div className="rounded-2xl border border-border bg-card p-5">
         <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-          Pending review
+          ממתין לבדיקה
         </div>
         <div className="mt-2 text-sm text-muted-foreground">
-          Nothing flagged for review.
+          אין עסקאות לבדיקה.
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ function PendingReview({ count, loading }: PendingReviewProps) {
       <div className="rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center justify-between">
           <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-            Pending review
+            ממתין לבדיקה
           </div>
           <div
             className="flex h-7 w-7 items-center justify-center rounded-full"
@@ -146,7 +146,7 @@ function PendingReview({ count, loading }: PendingReviewProps) {
           {loading ? <span className="text-muted-foreground">—</span> : count}
         </div>
         <div className="mt-0.5 text-xs text-muted-foreground">
-          {count === 1 ? "transaction" : "transactions"} need a closer look
+          עסקאות הדורשות בדיקה
         </div>
         <button
           type="button"
@@ -154,7 +154,7 @@ function PendingReview({ count, loading }: PendingReviewProps) {
           disabled={mutation.isPending || loading || count === 0}
           className="mt-3 inline-flex h-8 items-center justify-center rounded-md border border-border px-3 text-xs font-medium hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {mutation.isPending ? "Loading..." : "Review now"}
+          {mutation.isPending ? "טוען..." : "בדוק עכשיו"}
         </button>
       </div>
 
@@ -187,18 +187,18 @@ function Outliers({ largestIncome, largestExpense, loading }: OutliersProps) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5">
       <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-        Outliers
+        חריגות
       </div>
       <div className="mt-3 space-y-3">
         <OutlierRow
-          label="Largest expense"
+          label="הוצאה הגדולה ביותר"
           txn={largestExpense}
           color="var(--status-over)"
           icon={<ArrowDownRight className="h-4 w-4" />}
           loading={loading}
         />
         <OutlierRow
-          label="Largest income"
+          label="הכנסה הגדולה ביותר"
           txn={largestIncome}
           color="var(--status-on-track)"
           icon={<ArrowUpRight className="h-4 w-4" />}

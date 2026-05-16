@@ -47,11 +47,10 @@ export function AINotConnectedBanner({ className }: AINotConnectedBannerProps) {
 
       <div className="min-w-0 flex-1">
         <div className="font-serif text-base leading-tight tracking-tight">
-          AI not connected
+          AI לא מחובר
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          Transactions won&apos;t be auto-categorized, so budgets will appear
-          empty until you connect an AI provider.
+          עסקאות לא יסווגו אוטומטית, ולכן התקציבים יופיעו ריקים עד שתחבר ספק AI.
         </p>
       </div>
 
@@ -59,7 +58,7 @@ export function AINotConnectedBanner({ className }: AINotConnectedBannerProps) {
         size="sm"
         nativeButton={false}
         className="self-start sm:self-auto"
-        render={<Link href="/settings/ai">Connect AI</Link>}
+        render={<Link href="/settings/ai">חבר AI</Link>}
       />
     </div>
   );

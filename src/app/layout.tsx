@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces, Geist_Mono } from "next/font/google";
+import { Heebo, Fraunces, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/components/query-provider";
 import "./globals.css";
 
-const inter = Inter({
+const heebo = Heebo({
   variable: "--font-sans",
-  subsets: ["latin"],
+  subsets: ["hebrew", "latin"],
 });
 
 const fraunces = Fraunces({
@@ -34,8 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${inter.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
+      lang="he"
+      dir="rtl"
+      className={`${heebo.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">

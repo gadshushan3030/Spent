@@ -35,7 +35,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
       ? "Claude (Anthropic)"
       : settings?.aiProvider === "ollama"
         ? `Ollama · ${settings?.ollamaModel ?? "local"}`
-        : "Manual categorization";
+        : "קטגוריזציה ידנית";
 
   return (
     <div className="mx-auto w-full max-w-[520px] space-y-7 text-center">
@@ -64,7 +64,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
 
       <div>
         <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
-          Step 5 of 5 · Done
+          שלב 5 מתוך 5 · סיום
         </div>
         <motion.h1
           initial={{ y: 8, opacity: 0 }}
@@ -72,7 +72,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
           transition={{ delay: 0.15 }}
           className="mt-2 font-serif text-4xl leading-tight"
         >
-          You&apos;re all set 🌱
+          הכל מוכן 🌱
         </motion.h1>
         <motion.p
           initial={{ y: 8, opacity: 0 }}
@@ -80,8 +80,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
           transition={{ delay: 0.22 }}
           className="mx-auto mt-2 max-w-md text-sm text-muted-foreground"
         >
-          When you click below, Spent will pull your transactions and bucket
-          them up. You can re-sync any time from the dashboard or settings.
+          כשתלחץ למטה, Spent ימשוך את העסקאות שלך ויסווג אותן. ניתן לסנכרן מחדש בכל עת מלוח המחוונים או ההגדרות.
         </motion.p>
       </div>
 
@@ -92,12 +91,12 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
         className="rounded-2xl bg-card p-5 text-left"
       >
         <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
-          Setup summary
+          סיכום הגדרה
         </div>
 
         <div className="border-t border-border/40 py-3">
           <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            🏦 Connections · {integrations.length}
+            🏦 חיבורים · {integrations.length}
           </div>
           <div className="flex flex-wrap gap-1.5">
             {integrations.map((integ) => {
@@ -131,10 +130,10 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
 
         <div className="grid grid-cols-[100px_1fr] items-center gap-3 border-t border-border/40 py-3">
           <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-            🔒 Storage
+            🔒 אחסון
           </span>
           <span className="text-sm font-medium">
-            Local · <code className="text-xs">data/spent.db</code>
+            מקומי · <code className="text-xs">data/spent.db</code>
           </span>
         </div>
       </motion.div>
@@ -143,7 +142,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
 
       <div className="flex justify-center">
         <Button size="lg" onClick={onFinish}>
-          Open my budgets →
+          פתח את התקציבים שלי ←
         </Button>
       </div>
     </div>
@@ -152,10 +151,10 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
 
 function ImportProgress() {
   const [steps, setSteps] = useState<ImportStep[]>([
-    { id: "connect", label: "Connecting to providers", state: "active" },
-    { id: "fetch", label: "Ready to fetch 90 days of activity", state: "todo" },
-    { id: "cat", label: "Ready to categorize transactions", state: "todo" },
-    { id: "budgets", label: "Ready to suggest initial budgets", state: "todo" },
+    { id: "connect", label: "מתחבר לספקים", state: "active" },
+    { id: "fetch", label: "מוכן לשליפת 90 ימי פעילות", state: "todo" },
+    { id: "cat", label: "מוכן לסיווג עסקאות", state: "todo" },
+    { id: "budgets", label: "מוכן להציע תקציבים ראשוניים", state: "todo" },
   ]);
 
   useEffect(() => {
@@ -245,7 +244,7 @@ function ImportProgress() {
           </span>
           {s.state === "active" && (
             <span className="ml-auto font-mono text-[11px] text-muted-foreground">
-              working...
+              עובד...
             </span>
           )}
         </div>

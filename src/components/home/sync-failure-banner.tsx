@@ -40,8 +40,8 @@ export function SyncFailureBanner({ items, className }: Props) {
 
   const headline =
     failures.length === 1
-      ? `Sync failed for ${failures[0].providerName}`
-      : `Sync failed for ${failures.length} banks`;
+      ? `הסנכרון נכשל עבור ${failures[0].providerName}`
+      : `הסנכרון נכשל עבור ${failures.length} בנקים`;
 
   const showsTwoFAHint = failures.some(
     (f) => f.errorMessage && TWO_FA_RE.test(f.errorMessage)
@@ -82,14 +82,13 @@ export function SyncFailureBanner({ items, className }: Props) {
               <span className="font-medium text-foreground/80">
                 {f.providerName}:
               </span>{" "}
-              {truncate(f.errorMessage ?? "Sync failed")}
+              {truncate(f.errorMessage ?? "הסנכרון נכשל")}
             </li>
           ))}
         </ul>
         {showsTwoFAHint && (
           <p className="mt-2 text-xs text-muted-foreground">
-            Some banks (notably Yahav) block scraping when 2FA is on. Disable
-            it on the bank side and try again.
+            חלק מהבנקים (בעיקר יהב) חוסמים גישה כאשר 2FA מופעל. כבה אותו בצד הבנק ונסה שוב.
           </p>
         )}
       </div>
@@ -98,7 +97,7 @@ export function SyncFailureBanner({ items, className }: Props) {
         size="sm"
         nativeButton={false}
         className="self-start sm:self-auto"
-        render={<Link href="/settings/bank">Reconnect bank</Link>}
+        render={<Link href="/settings/bank">חבר מחדש</Link>}
       />
     </div>
   );

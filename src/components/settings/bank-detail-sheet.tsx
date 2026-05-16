@@ -98,9 +98,9 @@ function SheetBody({
             <SheetTitle>{info.name}</SheetTitle>
             <SheetDescription className="mt-0.5">
               {mode === "add"
-                ? "Connect this bank to sync transactions."
+                ? "חבר בנק זה לסנכרון עסקאות."
                 : connected
-                  ? `Connected · ${connected.transactionCount} transactions`
+                  ? `מחובר · ${connected.transactionCount} עסקאות`
                   : info.blurb}
             </SheetDescription>
           </div>
@@ -189,7 +189,7 @@ function CredentialsForm({
       const res = await testBankConnection(info.id);
       setResult(res);
     } catch {
-      setResult({ success: false, message: "Connection test failed." });
+      setResult({ success: false, message: "בדיקת החיבור נכשלה." });
     } finally {
       setTesting(false);
     }
@@ -203,10 +203,10 @@ function CredentialsForm({
       });
       queryClient.invalidateQueries({ queryKey: ["integrations"] });
       queryClient.invalidateQueries({ queryKey: ["setupStatus"] });
-      toast.success(`${info.name} credentials saved`);
+      toast.success(`פרטי הכניסה של ${info.name} נשמרו`);
       onSaved();
     } catch {
-      setResult({ success: false, message: "Failed to save credentials." });
+      setResult({ success: false, message: "שמירת פרטי הכניסה נכשלה." });
     } finally {
       setSaving(false);
     }
@@ -219,10 +219,10 @@ function CredentialsForm({
       setHasTwoFactorToken(false);
       queryClient.invalidateQueries({ queryKey: ["integrations"] });
       toast.success(
-        `Saved 2FA token cleared. Your next ${info.name} sync will ask for a fresh code.`
+        `טוקן ה-2FA נמחק. הסנכרון הבא של ${info.name} יבקש קוד חדש.`
       );
     } catch {
-      toast.error("Could not reset the 2FA token.");
+      toast.error("לא ניתן לאפס את טוקן ה-2FA.");
     } finally {
       setResetPending(false);
     }
@@ -232,7 +232,7 @@ function CredentialsForm({
     return (
       <div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading current values…
+        טוען ערכים נוכחיים…
       </div>
     );
   }
@@ -240,7 +240,7 @@ function CredentialsForm({
   return (
     <div className="space-y-4">
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        Credentials
+        פרטי כניסה
       </div>
       {info.credentialFields.map((field) => {
         const value = credentials[field.key] ?? "";
@@ -273,7 +273,7 @@ function CredentialsForm({
             {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
             {tooShort && (
               <p className="text-xs text-destructive">
-                Must be exactly {field.exactLength} digits.
+                חייב להיות בדיוק {field.exactLength} ספרות.
               </p>
             )}
           </div>
@@ -308,10 +308,10 @@ function CredentialsForm({
           onClick={handleTest}
           disabled={!allValid || testing || saving}
         >
-          {testing ? "Testing…" : "Test connection"}
+          {testing ? "בודק..." : "בדוק חיבור"}
         </Button>
         <Button onClick={handleSave} disabled={!allValid || saving || testing}>
-          {saving ? "Saving…" : "Save"}
+          {saving ? "שומר..." : "שמור"}
         </Button>
       </div>
     </div>
@@ -329,16 +329,16 @@ function RecentSyncCard({
   return (
     <div>
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
-        Recent sync
+        סנכרון אחרון
       </div>
       <div className="mt-2 rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm">
         <div className="font-medium">
-          {transactionCount} transaction{transactionCount === 1 ? "" : "s"}
+          {transactionCount} עסקאות
         </div>
         <div className="mt-0.5 text-xs text-muted-foreground">
           {lastSyncAt
-            ? `Last synced ${formatRelative(lastSyncAt)}`
-            : "Never synced"}
+            ? `סונכרן לאחרונה ${formatRelative(lastSyncAt)}`
+            : "מעולם לא סונכרן"}
         </div>
       </div>
     </div>
@@ -359,7 +359,7 @@ function DangerZone({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["integrations"] });
       queryClient.invalidateQueries({ queryKey: ["setupStatus"] });
-      toast.success("Bank disconnected");
+      toast.success("הבנק נותק");
       onRemoved();
     },
   });
@@ -369,9 +369,9 @@ function DangerZone({
       <div className="flex items-start gap-3">
         <AlertTriangle className="h-4 w-4 shrink-0 text-destructive" />
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-medium">Disconnect this bank</div>
+          <div className="text-sm font-medium">נתק בנק זה</div>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Removes credentials. Existing transactions stay.
+            מסיר פרטי כניסה. העסקאות הקיימות נשמרות.
           </p>
           {!confirming ? (
             <Button
@@ -381,7 +381,7 @@ function DangerZone({
               onClick={() => setConfirming(true)}
             >
               <Trash2 className="h-3.5 w-3.5" />
-              Disconnect
+              נתק
             </Button>
           ) : (
             <div className="mt-3 flex items-center gap-2">
@@ -390,7 +390,7 @@ function DangerZone({
                 size="sm"
                 onClick={() => setConfirming(false)}
               >
-                Cancel
+                ביטול
               </Button>
               <Button
                 size="sm"
@@ -398,7 +398,7 @@ function DangerZone({
                 onClick={() => mutation.mutate()}
                 disabled={mutation.isPending}
               >
-                {mutation.isPending ? "Disconnecting…" : "Confirm disconnect"}
+                {mutation.isPending ? "מנתק..." : "אשר ניתוק"}
               </Button>
             </div>
           )}
@@ -411,9 +411,9 @@ function DangerZone({
 function formatRelative(iso: string): string {
   const then = new Date(iso.replace(" ", "T") + "Z");
   const diffSec = (Date.now() - then.getTime()) / 1000;
-  if (diffSec < 60) return "just now";
-  if (diffSec < 3600) return `${Math.round(diffSec / 60)}m ago`;
-  if (diffSec < 86400) return `${Math.round(diffSec / 3600)}h ago`;
-  if (diffSec < 86400 * 7) return `${Math.round(diffSec / 86400)}d ago`;
+  if (diffSec < 60) return "זה עתה";
+  if (diffSec < 3600) return `לפני ${Math.round(diffSec / 60)}ד׳`;
+  if (diffSec < 86400) return `לפני ${Math.round(diffSec / 3600)}ש׳`;
+  if (diffSec < 86400 * 7) return `לפני ${Math.round(diffSec / 86400)} ימים`;
   return then.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }

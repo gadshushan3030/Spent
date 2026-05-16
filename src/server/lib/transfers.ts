@@ -46,10 +46,15 @@ export function detectKind(
   provider: string,
   chargedAmount: number
 ): TransactionKind {
-  if (isBankProvider(provider) && matchesTransferPattern(description)) {
+  // Credit-card payments from a bank account are always outgoing (negative).
+  // A positive amount can never be a credit-card payment, so skip transfer
+  // detection for credits to avoid misclassifying salary/refund income.
+  if (isBankProvider(provider) && chargedAmount < 0 && matchesTransferPattern(description)) {
     return "transfer";
   }
-  if (isBankProvider(provider) && chargedAmount > 0) {
+  if (chargedAmount > 0) {
+    // Bank providers: salary, incoming transfers, etc.
+    // Card providers: refunds and cashback.
     return "income";
   }
   return "expense";

@@ -92,8 +92,8 @@ export default function CategoriesSettingsPage() {
   return (
     <>
       <SectionShell
-        title="Categories"
-        description="One place to set budgets, descriptions, and grouping. Click any category to edit it."
+        title="קטגוריות"
+        description="מקום אחד להגדרת תקציבים, תיאורים וקבוצות. לחץ על קטגוריה כלשהי לעריכה."
       >
         <div className="flex flex-wrap items-center gap-2">
           <div className="inline-flex rounded-full border border-border bg-card p-0.5">
@@ -101,13 +101,13 @@ export default function CategoriesSettingsPage() {
               active={activeKind === "expense"}
               onClick={() => setActiveKind("expense")}
             >
-              Expense
+              הוצאה
             </KindTab>
             <KindTab
               active={activeKind === "income"}
               onClick={() => setActiveKind("income")}
             >
-              Income
+              הכנסה
             </KindTab>
           </div>
           <div className="relative flex-1 min-w-[180px]">
@@ -115,7 +115,7 @@ export default function CategoriesSettingsPage() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search categories…"
+              placeholder="חיפוש קטגוריות…"
               className="pl-8"
             />
           </div>
@@ -124,11 +124,11 @@ export default function CategoriesSettingsPage() {
 
         {!categories ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            Loading…
+            טוען…
           </div>
         ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            No matching categories.
+            לא נמצאו קטגוריות תואמות.
           </div>
         ) : (
           <div className="space-y-6">
@@ -153,7 +153,7 @@ export default function CategoriesSettingsPage() {
             ))}
             {orphans.length > 0 ? (
               <GroupBlock
-                title="Ungrouped"
+                title="ללא קבוצה"
                 color="#9ca3af"
                 onSelect={setOpenId}
                 dataById={dataByCategoryId}
@@ -234,7 +234,7 @@ function GroupBlock({
             onClick={() => onSelect(parent.id)}
             className="ml-auto text-[10px] uppercase tracking-[0.08em] text-muted-foreground/70 hover:text-foreground"
           >
-            Edit group
+            ערוך קבוצה
           </button>
         ) : null}
       </div>
@@ -279,7 +279,7 @@ function CategoryRow({
         <div className="hidden shrink-0 text-right sm:block">
           {data ? (
             <div className="text-xs tabular-nums text-muted-foreground">
-              ₪{Math.round(data.spent).toLocaleString("en-IL")} spent
+              ₪{Math.round(data.spent).toLocaleString("en-IL")} הוצאה
             </div>
           ) : null}
         </div>
@@ -300,14 +300,14 @@ function BudgetChip({
   if (category.budgetMode === "tracking") {
     return (
       <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-        tracking
+        מעקב
       </span>
     );
   }
   if (!data || data.budget <= 0) {
     return (
       <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-        no budget
+        ללא תקציב
       </span>
     );
   }
@@ -355,22 +355,22 @@ function NewGroupDialog({ kind }: { kind: CategoryKind }) {
         render={
           <Button variant="outline" size="sm" className="gap-1.5">
             <Plus className="h-3.5 w-3.5" />
-            New group
+            קבוצה חדשה
           </Button>
         }
       />
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>New parent group</DialogTitle>
+          <DialogTitle>קבוצת אב חדשה</DialogTitle>
         </DialogHeader>
         <div className="space-y-3">
           <div className="space-y-1.5">
-            <Label htmlFor="new-group-name">Name</Label>
+            <Label htmlFor="new-group-name">שם</Label>
             <Input
               id="new-group-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Food, Transport, Lifestyle"
+              placeholder="לדוג׳ מזון, תחבורה, אורח חיים"
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter" && name.trim().length > 0) {
@@ -380,7 +380,7 @@ function NewGroupDialog({ kind }: { kind: CategoryKind }) {
             />
           </div>
           <div className="space-y-1.5">
-            <Label>Kind</Label>
+            <Label>סוג</Label>
             <Select
               value={k}
               onValueChange={(v) => v && setK(v as CategoryKind)}
@@ -389,21 +389,21 @@ function NewGroupDialog({ kind }: { kind: CategoryKind }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="expense">Expense</SelectItem>
-                <SelectItem value="income">Income</SelectItem>
+                <SelectItem value="expense">הוצאה</SelectItem>
+                <SelectItem value="income">הכנסה</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <DialogFooter>
           <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
+            ביטול
           </Button>
           <Button
             onClick={() => mutation.mutate()}
             disabled={name.trim().length === 0 || mutation.isPending}
           >
-            {mutation.isPending ? "Creating…" : "Create"}
+            {mutation.isPending ? "יוצר…" : "צור"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -205,8 +205,8 @@ function DetailContent({ data }: { data: CategoryDetail }) {
           <div className="min-w-0 flex-1">
             <div className="text-[10px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
               {data.category.kind === "income"
-                ? "Income category"
-                : "Expense category"}
+                ? "קטגוריית הכנסה"
+                : "קטגוריית הוצאה"}
             </div>
             <SheetTitle className="truncate font-serif text-2xl font-normal">
               {data.category.name}
@@ -214,7 +214,7 @@ function DetailContent({ data }: { data: CategoryDetail }) {
           </div>
           {data.category.kind !== "income" && (
             <label className="flex shrink-0 cursor-pointer items-center gap-2 text-xs text-muted-foreground">
-              <span>Budget</span>
+              <span>תקציב</span>
               <Switch
                 size="sm"
                 checked={!isTracking}
@@ -226,9 +226,9 @@ function DetailContent({ data }: { data: CategoryDetail }) {
 
         {isTracking ? (
           <div className="mt-2 grid grid-cols-2 gap-3">
-            <Stat label="Spent" value={formatCurrency(data.spent)} />
+            <Stat label="הוצאה" value={formatCurrency(data.spent)} />
             <Stat
-              label="Typical / month"
+              label="טיפוסי / חודש"
               value={
                 data.vsTypical && data.vsTypical.typical > 0
                   ? formatCurrency(data.vsTypical.typical)
@@ -236,7 +236,7 @@ function DetailContent({ data }: { data: CategoryDetail }) {
               }
               sublabel={
                 data.vsTypical && data.vsTypical.typical > 0
-                  ? `${Math.round(data.vsTypical.percentDiff) >= 0 ? "+" : ""}${Math.round(data.vsTypical.percentDiff)}% this month`
+                  ? `${Math.round(data.vsTypical.percentDiff) >= 0 ? "+" : ""}${Math.round(data.vsTypical.percentDiff)}% החודש`
                   : undefined
               }
             />
@@ -244,14 +244,14 @@ function DetailContent({ data }: { data: CategoryDetail }) {
         ) : (
           <>
             <div className="mt-2 grid grid-cols-3 gap-3">
-              <Stat label="Spent" value={formatCurrency(data.spent)} />
+              <Stat label="הוצאה" value={formatCurrency(data.spent)} />
               <BudgetStat
                 amount={data.budget}
                 isAuto={data.isAutoBudget}
                 onSave={handleSaveBudget}
               />
               <Stat
-                label="Left"
+                label="נותר"
                 value={formatCurrency(Math.max(0, data.budget - data.spent))}
               />
             </div>
@@ -291,7 +291,7 @@ function DetailContent({ data }: { data: CategoryDetail }) {
 
         <div className="grid grid-cols-2 gap-3">
           <Card>
-            <CardLabel>VS. LAST MONTH</CardLabel>
+            <CardLabel>לעומת חודש קודם</CardLabel>
             <div className="mt-1 font-serif text-2xl tabular-nums">
               {data.prevSpent > 0
                 ? `${data.spent - data.prevSpent >= 0 ? "+" : "-"}${formatCurrency(Math.abs(data.spent - data.prevSpent))}`
@@ -305,30 +305,29 @@ function DetailContent({ data }: { data: CategoryDetail }) {
                     <>
                       {" · "}
                       {Math.abs(Math.round(data.vsLastMonth))}%{" "}
-                      {data.vsLastMonth < 0 ? "lower" : "higher"}
+                      {data.vsLastMonth < 0 ? "פחות" : "יותר"}
                     </>
                   )}
                 </>
               ) : (
-                "No spending last period"
+                "אין הוצאות בתקופה הקודמת"
               )}
             </div>
           </Card>
 
           <Card>
-            <CardLabel>AVG / TRANSACTION</CardLabel>
+            <CardLabel>ממוצע / עסקה</CardLabel>
             <div className="mt-1 font-serif text-2xl tabular-nums">
               {formatCurrency(data.avgPerTransaction)}
             </div>
             <div className="mt-0.5 text-xs text-muted-foreground">
-              {data.transactionCount} transaction
-              {data.transactionCount === 1 ? "" : "s"} this period
+              {data.transactionCount} {data.transactionCount === 1 ? "עסקה" : "עסקאות"} בתקופה זו
             </div>
           </Card>
         </div>
 
         <Card>
-          <CardLabel>DAILY SPEND THIS PERIOD</CardLabel>
+          <CardLabel>הוצאה יומית בתקופה זו</CardLabel>
           <div className="mt-2 h-32">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -384,22 +383,22 @@ function DetailContent({ data }: { data: CategoryDetail }) {
         <div>
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-sm font-medium">
-              Transactions · {data.transactionCount}
+              עסקאות · {data.transactionCount}
             </h3>
             <Button
               size="sm"
               variant="ghost"
               className="h-7 gap-1 text-xs"
               disabled
-              title="Manual transaction entry not available yet"
+              title="הוספת עסקה ידנית אינה זמינה עדיין"
             >
-              <Plus className="h-3.5 w-3.5" /> Add
+              <Plus className="h-3.5 w-3.5" /> הוסף
             </Button>
           </div>
           <div className="overflow-hidden rounded-2xl border bg-card">
             {data.transactions.length === 0 ? (
               <div className="p-6 text-center text-sm text-muted-foreground">
-                No transactions in this category for this period.
+                אין עסקאות בקטגוריה זו לתקופה זו.
               </div>
             ) : (
               <ul className="divide-y">
@@ -423,7 +422,7 @@ function DetailContent({ data }: { data: CategoryDetail }) {
                           className="border-none p-0"
                           style={{ color: t.categoryColor ?? undefined }}
                         >
-                          {t.categoryName ?? "Uncategorized"}
+                          {t.categoryName ?? "ללא קטגוריה"}
                         </Badge>
                         <ChevronDown className="h-3 w-3 text-muted-foreground" />
                       </DropdownMenuTrigger>
@@ -467,8 +466,8 @@ function ChildrenBreakdownSection({
 }) {
   const banner =
     budgetSource === "own"
-      ? "Budget set on this parent. Children's budgets are tracked individually but don't roll up here."
-      : "Budget rolled up from sub-categories. Set a budget on this parent to override.";
+      ? "תקציב מוגדר על קטגוריה זו. תקציבי הילדים נעקבים בנפרד ואינם מצטברים כאן."
+      : "התקציב מצטבר מתת-קטגוריות. הגדר תקציב על קטגוריה זו כדי לדרוס.";
   return (
     <div
       className="space-y-3 rounded-2xl p-4"
@@ -476,10 +475,10 @@ function ChildrenBreakdownSection({
     >
       <div className="flex items-baseline justify-between gap-3">
         <h3 className="text-sm font-medium">
-          Sub-categories · {children.length}
+          תת-קטגוריות · {children.length}
         </h3>
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
-          {budgetSource === "own" ? "Own budget" : "Rolled up"}
+          {budgetSource === "own" ? "תקציב עצמי" : "מצטבר"}
         </span>
       </div>
       <p className="text-xs text-muted-foreground">{banner}</p>
@@ -503,10 +502,10 @@ function ChildrenBreakdownSection({
                   <div className="font-medium">{formatCurrency(c.spent)}</div>
                   <div className="text-[10px] text-muted-foreground">
                     {c.budget > 0
-                      ? `of ${formatCurrency(c.budget)}`
+                      ? `מתוך ${formatCurrency(c.budget)}`
                       : c.budgetMode === "tracking"
-                        ? "tracking"
-                        : "no budget"}
+                        ? "מעקב"
+                        : "ללא תקציב"}
                   </div>
                 </div>
                 {c.budget > 0 && (
@@ -553,12 +552,12 @@ function NeedsReviewSection({
           style={{ color: "var(--status-heads-up)" }}
         />
         <h3 className="text-sm font-medium">
-          Needs review · {transactions.length}
+          דורשות בדיקה · {transactions.length}
         </h3>
       </div>
       <p className="text-xs text-muted-foreground">
-        The AI wasn&apos;t sure about these. Approve to keep, or pick a different
-        category. Either way, the choice is remembered for next time.
+        ה-AI לא היה בטוח לגבי אלה. אשר כדי לשמור, או בחר קטגוריה אחרת.
+        בכל מקרה, הבחירה נשמרת לפעם הבאה.
       </p>
       <ul className="mt-2 space-y-2">
         {transactions.map((t) => (
@@ -586,7 +585,7 @@ function NeedsReviewSection({
                       color: t.categoryColor ?? undefined,
                     }}
                   >
-                    {t.categoryName ?? "Uncategorized"}
+                    {t.categoryName ?? "ללא קטגוריה"}
                   </Badge>
                   <ChevronDown className="h-3 w-3 text-muted-foreground" />
                 </DropdownMenuTrigger>
@@ -611,7 +610,7 @@ function NeedsReviewSection({
                 onClick={() => onApprove(t.id)}
               >
                 <Check className="h-3.5 w-3.5" />
-                Approve
+                אשר
               </Button>
             </div>
           </li>
@@ -702,7 +701,7 @@ function BudgetStat({
   return (
     <div>
       <div className="text-[10px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
-        Budget
+        תקציב
       </div>
       {editing ? (
         <input
@@ -725,14 +724,14 @@ function BudgetStat({
             }
           }}
           className="mt-0.5 w-full rounded-md border border-border bg-background/70 px-1.5 py-0.5 font-serif text-xl tabular-nums outline-none focus:border-foreground/40 disabled:opacity-60"
-          placeholder="auto"
+          placeholder="אוטומטי"
         />
       ) : (
         <button
           type="button"
           onClick={startEdit}
           className="group mt-0.5 flex w-full cursor-pointer items-center gap-1.5 rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          aria-label="Edit budget amount"
+          aria-label="ערוך סכום תקציב"
         >
           <span className="font-serif text-xl tabular-nums">
             {amount > 0 ? formatCurrency(amount) : "—"}
@@ -742,7 +741,7 @@ function BudgetStat({
       )}
       {!editing && isAuto && amount > 0 && (
         <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-          auto
+          אוטומטי
         </div>
       )}
     </div>

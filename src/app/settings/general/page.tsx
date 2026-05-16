@@ -44,8 +44,8 @@ export default function GeneralSettingsPage() {
 
   return (
     <SectionShell
-      title="General"
-      description="Workspace name, monthly target, sync window, and when your monthly cycle resets."
+      title="כללי"
+      description="שם סביבת העבודה, יעד חודשי, חלון סנכרון, ומתי המחזור החודשי שלך מתאפס."
     >
       <WorkspaceNameCard />
       {settings ? (
@@ -92,7 +92,7 @@ function MonthlyTargetCard({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
-      toast.success("Saved");
+      toast.success("נשמר");
     },
   });
 
@@ -104,11 +104,11 @@ function MonthlyTargetCard({
   return (
     <div id="section-monthly-target">
       <SettingCard
-        title="Monthly target"
-        description="A single number that drives your dashboard pace verdict. Leave blank to hide the verdict."
+        title="יעד חודשי"
+        description="מספר יחיד שמניע את פסיקת הקצב בלוח המחוונים. השאר ריק להסתרת הפסיקה."
       >
         <div className="space-y-2 max-w-xs">
-          <Label htmlFor="monthly-target">Monthly spending target</Label>
+          <Label htmlFor="monthly-target">יעד הוצאה חודשי</Label>
           <InputGroup prefix="₪">
             <Input
               id="monthly-target"
@@ -124,12 +124,12 @@ function MonthlyTargetCard({
           </InputGroup>
           {typicalMonthly != null ? (
             <p className="text-[11px] text-muted-foreground">
-              Typical last 3 months: ₪
-              {typicalMonthly.toLocaleString("en-IL")} / mo
+              ממוצע 3 חודשים אחרונים: ₪
+              {typicalMonthly.toLocaleString("en-IL")} / חודש
             </p>
           ) : (
             <p className="text-[11px] text-muted-foreground">
-              No prior month history yet. Set a target you'd like to aim for.
+              אין עדיין היסטוריה חודשית. הגדר יעד שאליו תרצה לשאוף.
             </p>
           )}
         </div>
@@ -140,7 +140,7 @@ function MonthlyTargetCard({
             }
             disabled={!dirty || mutation.isPending}
           >
-            {mutation.isPending ? "Saving..." : "Save changes"}
+            {mutation.isPending ? "שומר..." : "שמור שינויים"}
           </Button>
         </div>
       </SettingCard>
@@ -164,7 +164,7 @@ function GeneralForm({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
-      toast.success("Saved");
+      toast.success("נשמר");
     },
   });
 
@@ -173,13 +173,13 @@ function GeneralForm({
 
   return (
     <SettingCard
-      title="Sync window & payday"
-      description="How far back each sync reaches, and the day your monthly cycle resets."
+      title="חלון סנכרון ויום משכורת"
+      description="עד כמה אחורה כל סנכרון מגיע, והיום שבו המחזור החודשי שלך מתאפס."
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <div className="text-xs font-medium text-foreground/80">
-            Months to sync
+            חודשים לסנכרון
           </div>
           <Select value={months} onValueChange={(v) => v && setMonths(v)}>
             <SelectTrigger>
@@ -188,17 +188,17 @@ function GeneralForm({
             <SelectContent>
               {[1, 2, 3, 6, 12].map((m) => (
                 <SelectItem key={m} value={String(m)}>
-                  {m} {m === 1 ? "month" : "months"}
+                  {m} {m === 1 ? "חודש" : "חודשים"}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <p className="text-[11px] text-muted-foreground">
-            Banks limit history to roughly 12 months.
+            הבנקים מגבילים היסטוריה לכ-12 חודשים.
           </p>
         </div>
         <div className="space-y-2">
-          <div className="text-xs font-medium text-foreground/80">Payday</div>
+          <div className="text-xs font-medium text-foreground/80">יום משכורת</div>
           <Select value={paydayDay} onValueChange={(v) => v && setPaydayDay(v)}>
             <SelectTrigger>
               <SelectValue />
@@ -206,13 +206,13 @@ function GeneralForm({
             <SelectContent>
               {Array.from({ length: 28 }, (_, i) => i + 1).map((d) => (
                 <SelectItem key={d} value={String(d)}>
-                  {ordinal(d)} of the month
+                  {d} לחודש
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
           <p className="text-[11px] text-muted-foreground">
-            Powers daily-allowance math and the days-until-payday hint.
+            מחשב את הקצבה היומית ורמז הימים עד משכורת.
           </p>
         </div>
       </div>
@@ -226,7 +226,7 @@ function GeneralForm({
           }
           disabled={!dirty || mutation.isPending}
         >
-          {mutation.isPending ? "Saving..." : "Save changes"}
+          {mutation.isPending ? "שומר..." : "שמור שינויים"}
         </Button>
       </div>
     </SettingCard>
@@ -255,10 +255,10 @@ function AutoSyncCard({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
       queryClient.invalidateQueries({ queryKey: ["home"] });
-      toast.success("Saved");
+      toast.success("נשמר");
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Failed to save");
+      toast.error(err instanceof Error ? err.message : "שמירה נכשלה");
     },
   });
 
@@ -268,16 +268,16 @@ function AutoSyncCard({
 
   return (
     <SettingCard
-      title="Auto-sync"
-      description="Run sync and categorization automatically once a day, while the Spent server is running."
+      title="סנכרון אוטומטי"
+      description="הפעל סנכרון וסיווג אוטומטית פעם ביום, בזמן שהשרת של Spent פועל."
     >
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-1">
           <Label htmlFor="auto-sync-toggle" className="text-sm font-medium">
-            Daily auto-sync
+            סנכרון אוטומטי יומי
           </Label>
           <p className="text-[11px] text-muted-foreground">
-            Runs in Israel time. Disabled by default to avoid surprise bank logins.
+            פועל בשעון ישראל. מושבת כברירת מחדל למניעת כניסות בנק בהפתעה.
           </p>
         </div>
         <Switch
@@ -288,7 +288,7 @@ function AutoSyncCard({
       </div>
       <div className="mt-5 grid gap-2 sm:max-w-xs">
         <Label htmlFor="auto-sync-time" className="text-xs font-medium text-foreground/80">
-          Time of day
+          שעת היום
         </Label>
         <Input
           id="auto-sync-time"
@@ -299,7 +299,7 @@ function AutoSyncCard({
           className="tabular-nums"
         />
         <p className="text-[11px] text-muted-foreground">
-          24-hour, Asia/Jerusalem. Most banks post transactions overnight, so early morning works well.
+          24 שעות, Asia/Jerusalem. רוב הבנקים מעדכנים עסקאות בלילה, אז בוקר מוקדם עובד טוב.
         </p>
       </div>
       <div className="mt-5 flex justify-end">
@@ -309,7 +309,7 @@ function AutoSyncCard({
           }
           disabled={!dirty || mutation.isPending}
         >
-          {mutation.isPending ? "Saving..." : "Save changes"}
+          {mutation.isPending ? "שומר..." : "שמור שינויים"}
         </Button>
       </div>
     </SettingCard>

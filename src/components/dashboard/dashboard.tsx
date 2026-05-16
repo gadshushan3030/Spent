@@ -64,7 +64,7 @@ export function Dashboard() {
   return (
     <>
       <PageHeader
-        title="Budgets"
+        title="תקציבים"
         meta={monthLabel}
         actions={
           <>
@@ -91,8 +91,8 @@ export function Dashboard() {
             }
           >
             <TabsList>
-              <TabsTrigger value="collapsed">Grouped</TabsTrigger>
-              <TabsTrigger value="expanded">All categories</TabsTrigger>
+              <TabsTrigger value="collapsed">מקובץ</TabsTrigger>
+              <TabsTrigger value="expanded">כל הקטגוריות</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

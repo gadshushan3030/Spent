@@ -27,28 +27,28 @@ export function ThisMonthCard({ data }: Props) {
   const isHeadsUp = !isOver && delta >= 20;
   const isAhead = !isOver && delta <= -10;
 
-  let verdict = "Spent this month";
+  let verdict = "הוצאות החודש";
   let verdictClass = "text-muted-foreground";
   if (hasBudget) {
     if (isOver) {
-      verdict = `${formatCurrency(spent - budget)} over budget`;
+      verdict = `${formatCurrency(spent - budget)} מעל התקציב`;
       verdictClass = "text-[var(--status-over)]";
     } else if (isHeadsUp) {
-      verdict = "A bit over schedule";
+      verdict = "קצת מעל הקצב";
       verdictClass = "text-[var(--status-over)]";
     } else if (isAhead) {
-      verdict = "Ahead of schedule";
+      verdict = "לפני הקצב";
       verdictClass = "text-[var(--status-on-track)]";
     } else {
-      verdict = "On schedule";
+      verdict = "בקצב";
       verdictClass = "text-[var(--status-on-track)]";
     }
   }
 
   return (
     <CardShell
-      label={`This ${monthLabel}`}
-      action={<CardAction href="/budget">Budget detail →</CardAction>}
+      label={`${monthLabel}`}
+      action={<CardAction href="/budget">פירוט תקציב ←</CardAction>}
     >
       <Link
         href="/budget"
@@ -75,10 +75,10 @@ export function ThisMonthCard({ data }: Props) {
             />
             <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
               <span>
-                {Math.round(pctSpent)}% of {formatCurrency(budget)}
+                {Math.round(pctSpent)}% מתוך {formatCurrency(budget)}
               </span>
               <span>
-                {daysUntilPayday} {daysUntilPayday === 1 ? "day" : "days"} to payday
+                {daysUntilPayday} ימים לתשלום
               </span>
             </div>
           </div>
@@ -86,7 +86,7 @@ export function ThisMonthCard({ data }: Props) {
 
         {!hasBudget && (
           <div className="text-xs text-muted-foreground">
-            {daysUntilPayday} {daysUntilPayday === 1 ? "day" : "days"} to payday
+            {daysUntilPayday} ימים לתשלום
           </div>
         )}
       </Link>
@@ -107,10 +107,10 @@ function DeltaPill({ value }: { value: number }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium tabular-nums ${cls}`}
-      title="Compared to the same window last month"
+      title="בהשוואה לאותה תקופה בחודש שעבר"
     >
       {!isFlat && <Icon className="h-3 w-3" />}
-      {Math.abs(rounded)}% vs. last month
+      {Math.abs(rounded)}% לעומת חודש שעבר
     </span>
   );
 }

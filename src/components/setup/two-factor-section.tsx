@@ -35,20 +35,17 @@ export function TwoFactorSection({
     <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         <ShieldCheck className="h-3.5 w-3.5" />
-        Two-factor authentication
+        אימות דו-שלבי
       </div>
 
       {supportsProgrammatic ? (
         <p className="text-xs text-muted-foreground">
-          {info.name} sends a one-time SMS code on first sync. Spent will save a
-          long-term token so future syncs don&apos;t need a fresh code.
-          {hasTwoFactorToken && " You already have a saved token."}
+          {info.name} שולח קוד SMS חד-פעמי בסנכרון הראשון. Spent ישמור טוקן לטווח ארוך כך שסנכרונים עתידיים לא יצטרכו קוד חדש.
+          {hasTwoFactorToken && " כבר יש לך טוקן שמור."}
         </p>
       ) : (
         <p className="text-xs text-muted-foreground">
-          If you have 2FA enabled on {info.name}, turn this on so Spent opens a
-          browser window when syncing this account. Solve the challenge in the
-          popup and the sync will continue.
+          אם יש לך 2FA מופעל ב-{info.name}, הפעל זאת כדי ש-Spent יפתח חלון דפדפן בסנכרון חשבון זה. פתור את האתגר בחלון הקופץ והסנכרון יימשך.
         </p>
       )}
 
@@ -57,7 +54,7 @@ export function TwoFactorSection({
           htmlFor={`${info.id}-manual-2fa`}
           className="text-sm font-medium"
         >
-          This account requires 2FA
+          חשבון זה דורש 2FA
         </Label>
         <Switch
           id={`${info.id}-manual-2fa`}
@@ -68,16 +65,16 @@ export function TwoFactorSection({
       </div>
       {supportsProgrammatic ? (
         <p className="text-[11px] text-muted-foreground">
-          Not needed for {info.name} — 2FA is handled programmatically.
+          לא נדרש עבור {info.name} — 2FA מטופל תוכנתית.
         </p>
       ) : null}
 
       {showResetButton && supportsProgrammatic && hasTwoFactorToken ? (
         <div className="flex items-center justify-between gap-3 border-t border-border/60 pt-3">
           <div>
-            <div className="text-sm font-medium">Saved 2FA token</div>
+            <div className="text-sm font-medium">טוקן 2FA שמור</div>
             <div className="text-[11px] text-muted-foreground">
-              Removing it forces a fresh SMS code on the next sync.
+              הסרתו מאלץ קוד SMS חדש בסנכרון הבא.
             </div>
           </div>
           <Button
@@ -86,7 +83,7 @@ export function TwoFactorSection({
             onClick={onResetToken}
             disabled={resetPending}
           >
-            {resetPending ? "Resetting…" : "Reset 2FA"}
+            {resetPending ? "מאפס…" : "אפס 2FA"}
           </Button>
         </div>
       ) : null}

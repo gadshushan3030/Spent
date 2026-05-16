@@ -8,7 +8,7 @@ interface WorkspaceNameStepProps {
   submitting?: boolean;
 }
 
-const SUGGESTIONS = ["Personal", "Business", "Joint", "Side hustle"];
+const SUGGESTIONS = ["אישי", "עסקי", "משותף", "עסק צדדי"];
 
 export function WorkspaceNameStep({
   onComplete,
@@ -26,16 +26,15 @@ export function WorkspaceNameStep({
   return (
     <div className="mx-auto flex max-w-[520px] flex-col items-center gap-4 pt-8 text-center">
       <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-        Step One · Workspace
+        שלב ראשון · סביבת עבודה
       </div>
       <h1 className="max-w-[440px] font-serif text-4xl leading-[1.08] tracking-tight">
-        What should we call this corner of your finances?
+        איך נקרא לפינה הזו של הכספים שלך?
       </h1>
       <p className="max-w-[380px] text-sm leading-relaxed text-muted-foreground">
-        A workspace keeps one slice of your life isolated — its own banks,
-        categories, budgets. Most people start with{" "}
+        סביבת עבודה מבודדת חתך אחד של חייך — הבנקים, הקטגוריות והתקציבים שלה. רוב האנשים מתחילים עם{" "}
         <span className="text-foreground underline decoration-primary underline-offset-2">
-          Personal
+          אישי
         </span>
         .
       </p>
@@ -52,7 +51,7 @@ export function WorkspaceNameStep({
             htmlFor="workspace-name"
             className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground"
           >
-            Workspace name
+            שם סביבת העבודה
           </label>
           <input
             id="workspace-name"
@@ -62,7 +61,7 @@ export function WorkspaceNameStep({
             maxLength={60}
             autoFocus
             disabled={submitting}
-            placeholder="Personal"
+            placeholder="אישי"
             className="mt-2 w-full border-0 bg-transparent p-0 font-serif text-2xl leading-tight tracking-tight text-foreground outline-none placeholder:text-muted-foreground/40"
           />
         </div>
@@ -82,7 +81,7 @@ export function WorkspaceNameStep({
         </div>
 
         <p className="text-xs text-muted-foreground">
-          You can rename it later from Settings.
+          ניתן לשנות את השם מאוחר יותר מההגדרות.
         </p>
 
         <Button
@@ -90,18 +89,18 @@ export function WorkspaceNameStep({
           disabled={!name.trim() || submitting}
           className="rounded-full px-6 py-3 text-sm font-semibold"
         >
-          {submitting ? "Creating…" : "Create & continue →"}
+          {submitting ? "יוצר…" : "צור והמשך ←"}
         </Button>
       </form>
 
       <div className="mt-6 flex w-full max-w-[380px] items-center justify-between text-[10px] text-muted-foreground/80">
-        <span>Encrypted locally</span>
+        <span>מוצפן מקומית</span>
         <span>
-          Press{" "}
+          לחץ{" "}
           <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-[9px] font-semibold">
             ↵
           </kbd>{" "}
-          to continue
+          להמשך
         </span>
       </div>
     </div>

@@ -139,7 +139,7 @@ export function SyncButton({ onComplete, autoStart = false }: SyncButtonProps) {
         setSyncing(false);
         setAiWarning(warning ?? null);
         if (warning) {
-          toast.warning("AI categorization issue", {
+          toast.warning("בעיה בסיווג AI", {
             description: warning,
             duration: 6000,
             closeButton: true,
@@ -153,7 +153,7 @@ export function SyncButton({ onComplete, autoStart = false }: SyncButtonProps) {
         toast.error(message, {
           duration: Infinity,
           closeButton: true,
-          description: "Check the dev server terminal for full details.",
+          description: "בדוק את טרמינל שרת הפיתוח לפרטים מלאים.",
         });
       }
     });
@@ -179,7 +179,7 @@ export function SyncButton({ onComplete, autoStart = false }: SyncButtonProps) {
         className="gap-1.5"
       >
         <RefreshCw className={`h-3.5 w-3.5 ${syncing ? "animate-spin" : ""}`} />
-        {syncing ? "Syncing…" : "Sync & Categorize"}
+        {syncing ? "מסנכרן…" : "סנכרן וסווג"}
       </Button>
 
       <SyncProgressDialog

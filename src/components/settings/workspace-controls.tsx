@@ -41,8 +41,8 @@ export function WorkspaceNameCard() {
   const { active } = useActiveWorkspace();
   if (!active) {
     return (
-      <SettingCard title="Workspace name">
-        <div className="text-sm text-muted-foreground">Loading…</div>
+      <SettingCard title="שם סביבת העבודה">
+        <div className="text-sm text-muted-foreground">טוען…</div>
       </SettingCard>
     );
   }
@@ -57,10 +57,10 @@ function WorkspaceNameCardInner({ workspace }: { workspace: Workspace }) {
     mutationFn: (n: string) => renameWorkspace(workspace.id, n),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-      toast.success("Workspace renamed");
+      toast.success("סביבת העבודה שונתה");
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Rename failed");
+      toast.error(err instanceof Error ? err.message : "שינוי השם נכשל");
     },
   });
 
@@ -68,12 +68,12 @@ function WorkspaceNameCardInner({ workspace }: { workspace: Workspace }) {
 
   return (
     <SettingCard
-      title="Workspace name"
-      description="Shown in the sidebar switcher. Visible only to you."
+      title="שם סביבת העבודה"
+      description="מוצג במחליף הצדדי. גלוי רק לך."
     >
       <div className="flex flex-wrap items-end gap-3">
         <div className="flex-1 min-w-[220px] space-y-1.5">
-          <Label htmlFor="workspace-rename">Name</Label>
+          <Label htmlFor="workspace-rename">שם</Label>
           <Input
             id="workspace-rename"
             value={name}
@@ -83,12 +83,13 @@ function WorkspaceNameCardInner({ workspace }: { workspace: Workspace }) {
           <p className="text-[11px] text-muted-foreground">
             Slug: <code className="rounded bg-muted px-1">{workspace.slug}</code>
           </p>
+
         </div>
         <Button
           onClick={() => rename.mutate(name.trim())}
           disabled={!dirty || rename.isPending}
         >
-          {rename.isPending ? "Saving…" : "Save"}
+          {rename.isPending ? "שומר..." : "שמור"}
         </Button>
       </div>
     </SettingCard>
@@ -137,15 +138,15 @@ function DangerCard({
       toast.success(`"${workspace.name}" deleted`);
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Delete failed");
+      toast.error(err instanceof Error ? err.message : "המחיקה נכשלה");
     },
   });
 
   return (
     <>
       <SettingCard
-        title="Delete this workspace"
-        description="Permanently removes this workspace and every bank connection, transaction, category, and budget inside it. The other workspaces are untouched."
+        title="מחק סביבת עבודה"
+        description="מסיר לצמיתות את סביבת העבודה הזו וכל חיבורי הבנק, העסקאות, הקטגוריות והתקציבים שבה. שאר סביבות העבודה לא נפגעות."
       >
         <Button
           variant="destructive"
@@ -153,11 +154,11 @@ function DangerCard({
           disabled={disabled}
         >
           <Trash2 className="mr-2 size-4" />
-          Delete workspace
+          מחק סביבת עבודה
         </Button>
         {disabled ? (
           <p className="mt-2 text-xs text-muted-foreground">
-            You can&apos;t delete your only workspace. Create another one first.
+            לא ניתן למחוק את סביבת העבודה היחידה שלך. צור אחרת תחילה.
           </p>
         ) : null}
       </SettingCard>
@@ -165,23 +166,21 @@ function DangerCard({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete &ldquo;{workspace.name}&rdquo;?</DialogTitle>
+            <DialogTitle>למחוק את &ldquo;{workspace.name}&rdquo;?</DialogTitle>
             <DialogDescription>
-              Every transaction, category, budget, and saved bank credential in
-              this workspace will be permanently removed. This can&apos;t be
-              undone.
+              כל עסקה, קטגוריה, תקציב ופרטי כניסה לבנק שמורים בסביבת עבודה זו יוסרו לצמיתות. לא ניתן לבטל פעולה זו.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+              ביטול
             </Button>
             <Button
               variant="destructive"
               onClick={() => del.mutate()}
               disabled={del.isPending}
             >
-              {del.isPending ? "Deleting…" : "Delete workspace"}
+              {del.isPending ? "מוחק..." : "מחק סביבת עבודה"}
             </Button>
           </DialogFooter>
         </DialogContent>

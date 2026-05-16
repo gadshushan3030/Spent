@@ -65,7 +65,7 @@ export function WorkspaceSwitcher() {
               <SidebarMenuButton
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                tooltip={active?.name ?? "Workspaces"}
+                tooltip={active?.name ?? "סביבות עבודה"}
               />
             }
           >
@@ -77,7 +77,7 @@ export function WorkspaceSwitcher() {
                 {active?.name ?? "Workspace"}
               </span>
               <span className="truncate text-[11px] text-muted-foreground">
-                Workspace
+                סביבת עבודה
               </span>
             </div>
             <ChevronsUpDown className="ml-auto size-4 shrink-0 opacity-60 group-data-[collapsible=icon]:hidden" />
@@ -90,7 +90,7 @@ export function WorkspaceSwitcher() {
             className="min-w-[14rem]"
           >
             <div className="px-2 pb-1 pt-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Workspaces
+              סביבות עבודה
             </div>
             {workspaces.map((w) => (
               <DropdownMenuItem
@@ -111,14 +111,14 @@ export function WorkspaceSwitcher() {
               className="gap-2"
             >
               <Plus className="size-4" />
-              New workspace
+              סביבת עבודה חדשה
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => router.push("/settings#workspace")}
               className="gap-2"
             >
               <Settings2 className="size-4" />
-              Manage workspaces
+              נהל סביבות עבודה
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -62,7 +62,7 @@ export function HeroCard({ data, loading }: HeroCardProps) {
     ...(rest.length > 0
       ? [
           {
-            name: `+${rest.length} more`,
+            name: `+${rest.length} נוספים`,
             color: "#B1AA9C",
             amount: restTotal,
             pct: grandTotal > 0 ? (restTotal / grandTotal) * 100 : 0,
@@ -77,16 +77,16 @@ export function HeroCard({ data, loading }: HeroCardProps) {
   );
 
   const ctaLabel = typicalMonthly
-    ? `Set a monthly target (₪${typicalMonthly.toLocaleString("en-IL")} typical) →`
-    : `Set a monthly target to see how you're pacing →`;
+    ? `הגדר יעד חודשי (₪${typicalMonthly.toLocaleString("en-IL")} טיפוסי) ←`
+    : `הגדר יעד חודשי כדי לראות את הקצב שלך ←`;
 
   const body = (
     <div className="space-y-5">
       <p className="text-sm text-muted-foreground">
         {todayLabel}
         {" · "}
-        You have <span className="font-medium text-foreground">{daysUntilPayday} {daysUntilPayday === 1 ? "day" : "days"}</span>{" "}
-        until payday
+        <span className="font-medium text-foreground">{daysUntilPayday} {daysUntilPayday === 1 ? "יום" : "ימים"}</span>{" "}
+        עד לתשלום
       </p>
       <h2 className="font-serif text-3xl leading-[1.05] tracking-tighter md:text-4xl lg:text-5xl">
         {heroPhrase}
@@ -160,11 +160,11 @@ function renderPhrase(phrase: string, total: number) {
 
   // Find the keyword that indicates pace tone
   const tones: [string, string][] = [
-    ["over budget", "text-[var(--status-over)]"],
-    ["over schedule", "text-[var(--status-over)]"],
-    ["well under schedule", "text-[var(--status-on-track)]"],
-    ["ahead of schedule", "text-[var(--status-on-track)]"],
-    ["on schedule", "text-[var(--status-on-track)]"],
+    ["חריגה מהתקציב", "text-[var(--status-over)]"],
+    ["חריגה מהלוח", "text-[var(--status-over)]"],
+    ["הרבה לפני הלוח", "text-[var(--status-on-track)]"],
+    ["לפני הלוח", "text-[var(--status-on-track)]"],
+    ["בהתאם ללוח", "text-[var(--status-on-track)]"],
   ];
   let toneRender = <span>{after}</span>;
   for (const [keyword, cls] of tones) {
@@ -233,15 +233,15 @@ function PaceGauge({
 
   let verdict: string;
   if (!hasBudget) {
-    verdict = "spent this month";
+    verdict = "הוצאה החודש";
   } else if (isOverBudget) {
-    verdict = `₪${overBudgetBy.toLocaleString("en-IL")} over budget`;
+    verdict = `₪${overBudgetBy.toLocaleString("en-IL")} חריגה מהתקציב`;
   } else if (delta >= 25) {
-    verdict = `₪${absScheduleGap.toLocaleString("en-IL")} over schedule`;
+    verdict = `₪${absScheduleGap.toLocaleString("en-IL")} חריגה מהלוח`;
   } else if (isAhead) {
-    verdict = `₪${absScheduleGap.toLocaleString("en-IL")} ahead of schedule`;
+    verdict = `₪${absScheduleGap.toLocaleString("en-IL")} לפני הלוח`;
   } else {
-    verdict = "On schedule";
+    verdict = "בהתאם ללוח";
   }
 
   // Notch position at the expected-by-today point on the ring.
@@ -300,7 +300,7 @@ function PaceGauge({
         </div>
         {hasBudget && (
           <div className="mt-0.5 text-[11px] text-muted-foreground tabular-nums">
-            of ₪{Math.round(totalBudget).toLocaleString("en-IL")}
+            מתוך ₪{Math.round(totalBudget).toLocaleString("en-IL")}
           </div>
         )}
         <div

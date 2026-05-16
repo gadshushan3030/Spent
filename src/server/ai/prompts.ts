@@ -45,6 +45,28 @@ function renderCategories(categories: CategoryForCategorization[]): string {
 const HIERARCHY_RULE =
   "Category lists may show group headers (e.g., 'Food:') with leaves indented beneath them. Group headers are NOT valid categoryName values - always pick a leaf (the indented name).";
 
+const ISRAELI_MERCHANTS = `
+Israeli merchant reference (use this to identify business types from Hebrew/transliterated names):
+- Groceries/Supermarket: שופרסל (Shufersal), רמי לוי (Rami Levy), ויקטורי (Victory), מחסני השוק, יוחננוף (Yochananof), קינג סטור, AM:PM, מגה, ספייסס
+- Restaurants/Cafes: ארומה (Aroma), קפה קפה, גוטה, נטו, בורגר קינג, מקדונלד'ס, שווארמה, פיצה, סושי, רולדין, קפה גרג
+- Gas/Fuel: פז (Paz), סונול (Sonol), דלק (Delek), גז, Ten (תן), Yellow
+- Pharmacy/Health: סופר-פארם (Super-Pharm), ניופארם (NewPharm), בית מרקחת, פארמה
+- Telecom/Internet: פרטנר (Partner), סלקום (Cellcom), HOT, yes, גולן טלקום, רמי לוי תקשורת, 012, 013, בזק (Bezeq)
+- Electricity/Utilities: חברת החשמל (IEC), מקורות, עיריית, ועד בית, גז טבעי
+- Insurance: כלל (Clal), הפניקס (Phoenix), מנורה (Menorah), מגדל (Migdal), הראל (Harel), איי.די.איי (AIG), AIG
+- Banking/Finance: עמלת, ריבית, משכנתא, הלוואה, ביטוח, קרן פנסיה
+- Transport/Transit: רב קו (Rav Kav), קווים, אגד, דן, מטרו, רכבת ישראל, גט, יאנגו, Waze Carpool, אוטובוס, Gett, Yango
+- Parking: פנגו (Pango), פארקינג, חניה, קניון
+- Shopping/Clothing: זארה (Zara), H&M, קסטרו (Castro), FOX, גולף (Golf), רנואר, מנגו, ACE, IKEA
+- Home/DIY: ACE, HOME CENTER, בית טוטאל, עשה זאת בעצמך
+- Entertainment: yes, HOT, נטפליקס (Netflix), ספוטיפיי (Spotify), סינמה סיטי, יס פלאנט, HOT Cinema
+- Medical: קופת חולים (Maccabi/Clalit/Meuhedet/Leumit), מרפאה, רופא, בית חולים, אחות
+- Education: אוניברסיטה, מכללה, בית ספר, גן, צהרון, חוג
+- Travel: ארקיע, אל על (El Al), ויזפליי, וויז, בוקינג (Booking), אייר B&B
+- Government: עיריית (municipality name), מס הכנסה, ביטוח לאומי, משרד
+`;
+
+
 function renderCorrections(corrections: PastCorrection[]): string {
   if (corrections.length === 0) return "";
   const lines = corrections
@@ -87,6 +109,7 @@ export function buildCategorizationPrompt(
 Categories (use ONLY these names):
 ${categoriesBlock}
 ${correctionsBlock}
+${ISRAELI_MERCHANTS}
 Transactions:
 ${transactionLines}
 
@@ -99,7 +122,7 @@ Rules:
 - Use ONLY category names from the provided list.
 - ${HIERARCHY_RULE}
 - Every transaction must be categorized; pick the closest matching category.
-- Israeli merchant names (Hebrew or transliterated) are common; categorize based on the business type.
+- Israeli merchant names (Hebrew or transliterated) are common; use the reference list above to identify them.
 - Pay attention to the "NOT" clauses in the category descriptions - they disambiguate common confusions.
 - Apply lessons from "Past corrections" - if a new merchant resembles a past correction, prefer the corrected category.`;
   }
@@ -111,6 +134,7 @@ Rules:
 Existing categories:
 ${categoriesBlock}
 ${correctionsBlock}
+${ISRAELI_MERCHANTS}
 Transactions:
 ${transactionLines}
 

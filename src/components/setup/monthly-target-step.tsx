@@ -32,13 +32,13 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
     <div className="mx-auto w-full max-w-[520px] space-y-6">
       <header className="space-y-2">
         <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Step 3 of 5
+          שלב 3 מתוך 5
         </div>
         <h1 className="font-serif text-4xl leading-[1.08] tracking-tight">
-          Set your monthly ceiling
+          קבע את התקרה החודשית שלך
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          A single number for how much you want to spend each month.
+          מספר יחיד לכמה שתרצה להוציא כל חודש.
         </p>
       </header>
 
@@ -47,8 +47,8 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
           <Info className="h-3 w-3" />
         </div>
         <p className="text-[12px] leading-relaxed text-muted-foreground">
-          Your dashboard will show a <strong className="text-foreground">pace meter</strong>:
-          green when you&apos;re tracking under, amber as you near the limit, red if you go over.
+          לוח המחוונים יציג <strong className="text-foreground">מד קצב</strong>:
+          ירוק כשאתה מתחת, כתום כשאתה מתקרב לגבול, אדום אם חרגת.
         </p>
       </div>
 
@@ -57,7 +57,7 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
           htmlFor="monthly-target"
           className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
         >
-          Monthly target
+          יעד חודשי
         </label>
         <InputGroup prefix="₪">
           <Input
@@ -74,19 +74,19 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
           />
         </InputGroup>
         <p className="text-[11px] text-muted-foreground">
-          You can change this any time in settings.
+          ניתן לשנות זאת בכל עת בהגדרות.
         </p>
       </div>
 
       <footer className="flex items-center justify-between pt-2">
         <Button variant="outline" onClick={onBack} disabled={saving}>
-          ← Back
+          ← חזור
         </Button>
         <Button
           onClick={() => save(valid ? parsed : null)}
           disabled={saving || !valid}
         >
-          {saving ? "Saving..." : "Continue →"}
+          {saving ? "שומר..." : "המשך ←"}
         </Button>
       </footer>
 
@@ -97,7 +97,7 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
           disabled={saving}
           className="text-[11px] text-muted-foreground underline decoration-muted-foreground/30 underline-offset-4 transition-colors hover:text-foreground"
         >
-          Skip for now
+          דלג לעת עתה
         </button>
       </div>
     </div>

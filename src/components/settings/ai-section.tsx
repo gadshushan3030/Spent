@@ -25,17 +25,17 @@ export function AISection() {
   });
   if (!settings) {
     return (
-      <SectionShell title="AI & automation">
+      <SectionShell title="AI ואוטומציה">
         <SettingCard>
-          <div className="text-sm text-muted-foreground">Loading...</div>
+          <div className="text-sm text-muted-foreground">טוען...</div>
         </SettingCard>
       </SectionShell>
     );
   }
   return (
     <SectionShell
-      title="AI & automation"
-      description="How Spent organizes new transactions. Switch any time — your existing categorizations stay."
+      title="AI ואוטומציה"
+      description="כיצד Spent מארגן עסקאות חדשות. החלף בכל עת — הסיווגים הקיימים שלך נשמרים."
     >
       <AIForm key={settings.aiProvider} settings={settings} />
     </SectionShell>
@@ -61,7 +61,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
-      toast.success("AI settings saved");
+      toast.success("הגדרות AI נשמרו");
       setApiKey("");
     },
   });
@@ -69,8 +69,8 @@ function AIForm({ settings }: { settings: AppSettings }) {
   return (
     <>
       <SettingCard
-        title="Provider"
-        description="Switch any time. Your existing categorizations are kept."
+        title="ספק AI"
+        description="החלף בכל עת. הסיווגים הקיימים שלך נשמרים."
       >
         <div className="grid gap-2 sm:grid-cols-3">
           {(
@@ -78,17 +78,17 @@ function AIForm({ settings }: { settings: AppSettings }) {
               {
                 id: "claude",
                 title: "Claude (Anthropic)",
-                desc: "Fast and accurate. Paid API. Bring your own API key.",
+                desc: "מהיר ומדויק. API בתשלום. הבא את מפתח ה-API שלך.",
               },
               {
                 id: "ollama",
-                title: "Ollama (Local)",
-                desc: "Free, private, runs on your machine. Needs a model download.",
+                title: "Ollama (מקומי)",
+                desc: "חינמי, פרטי, פועל על המכשיר שלך. דורש הורדת מודל.",
               },
               {
                 id: "none",
-                title: "None",
-                desc: "Skip categorization. Assign categories manually.",
+                title: "ידני",
+                desc: "דלג על סיווג. הקצה קטגוריות ידנית.",
               },
             ] as const
           ).map((opt) => (
@@ -112,11 +112,11 @@ function AIForm({ settings }: { settings: AppSettings }) {
 
       {provider === "claude" && (
         <SettingCard
-          title="Claude API key"
-          description="Paste your key from console.anthropic.com. It's encrypted at rest with AES-256-GCM."
+          title="מפתח Claude API"
+          description="הדבק את המפתח שלך מ-console.anthropic.com. הוא מוצפן עם AES-256-GCM."
         >
           <div className="space-y-2">
-            <Label htmlFor="claude-key">API key</Label>
+            <Label htmlFor="claude-key">מפתח API</Label>
             <Input
               id="claude-key"
               type="password"
@@ -125,7 +125,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
               placeholder="sk-ant-..."
             />
             <p className="text-xs text-muted-foreground">
-              Leave blank to keep your existing key.
+              השאר ריק לשמירת המפתח הקיים שלך.
             </p>
           </div>
         </SettingCard>
@@ -133,8 +133,8 @@ function AIForm({ settings }: { settings: AppSettings }) {
 
       {provider === "ollama" && (
         <SettingCard
-          title="Ollama configuration"
-          description="Spent auto-starts Ollama if it's installed but not running."
+          title="הגדרת Ollama"
+          description="Spent מפעיל Ollama אוטומטית אם הוא מותקן אך לא פועל."
         >
           <div className="space-y-4">
             <div className="space-y-2">
@@ -147,7 +147,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
               />
             </div>
             <div className="space-y-2">
-              <Label>Model</Label>
+              <Label>מודל</Label>
               <Select
                 value={ollamaModel}
                 onValueChange={(v) => v && setOllamaModel(v)}
@@ -165,7 +165,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
                         </span>
                         {m.recommended && (
                           <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">
-                            recommended
+                            מומלץ
                           </span>
                         )}
                       </div>
@@ -190,7 +190,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
           onClick={() => mutation.mutate()}
           disabled={mutation.isPending}
         >
-          {mutation.isPending ? "Saving..." : "Save AI settings"}
+          {mutation.isPending ? "שומר..." : "שמור הגדרות AI"}
         </Button>
       </div>
     </>

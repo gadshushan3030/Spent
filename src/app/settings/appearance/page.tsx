@@ -7,18 +7,18 @@ import { SectionShell, SettingCard } from "@/components/settings/section-shell";
 const OPTIONS = [
   {
     value: "light" as const,
-    label: "Light",
-    description: "Cream background, dark text",
+    label: "בהיר",
+    description: "רקע בהיר, טקסט כהה",
   },
   {
     value: "dark" as const,
-    label: "Dark",
-    description: "Warm dark background, light text",
+    label: "כהה",
+    description: "רקע כהה חמים, טקסט בהיר",
   },
   {
     value: "system" as const,
-    label: "System",
-    description: "Follow your OS preference",
+    label: "מערכת",
+    description: "עוקב אחר הגדרות מערכת ההפעלה שלך",
   },
 ];
 
@@ -29,10 +29,10 @@ export default function AppearanceSettingsPage() {
 
   return (
     <SectionShell
-      title="Appearance"
-      description="Choose how Spent looks. System matches your OS setting and updates automatically."
+      title="מראה"
+      description="בחר כיצד Spent נראה. מערכת מתאימה להגדרות מערכת ההפעלה שלך ומתעדכנת אוטומטית."
     >
-      <SettingCard title="Theme">
+      <SettingCard title="ערכת נושא">
         <div className="grid gap-2 sm:grid-cols-3">
           {OPTIONS.map((o) => {
             const isActive = active === o.value;

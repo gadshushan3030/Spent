@@ -20,13 +20,13 @@ export function CategorizeButton({ onApplied }: CategorizeButtonProps) {
     mutationFn: previewCategorize,
     onSuccess: (data) => {
       if (data.uncategorizedCount === 0) {
-        toast.info("Nothing to categorize - every transaction already has a category.");
+        toast.info("אין מה לסווג - לכל עסקה כבר יש קטגוריה.");
         return;
       }
       setPreview(data);
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Categorization failed", {
+      toast.error(err instanceof Error ? err.message : "הסיווג נכשל", {
         duration: Infinity,
         closeButton: true,
       });
@@ -77,7 +77,7 @@ export function CategorizeButton({ onApplied }: CategorizeButtonProps) {
             />
           </svg>
         )}
-        {mutation.isPending ? "Thinking..." : "Categorize"}
+        {mutation.isPending ? "מעבד..." : "סווג"}
       </Button>
 
       {preview && (

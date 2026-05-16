@@ -26,19 +26,19 @@ import { WorkspaceSwitcher } from "./workspace-switcher";
 const NAV = [
   {
     href: "/",
-    label: "Home",
+    label: "בית",
     Icon: LayoutDashboard,
     match: (p: string) => p === "/",
   },
   {
     href: "/budget",
-    label: "Budget",
+    label: "תקציב",
     Icon: Wallet,
     match: (p: string) => p.startsWith("/budget"),
   },
   {
     href: "/transactions",
-    label: "Transactions",
+    label: "עסקאות",
     Icon: ArrowLeftRight,
     match: (p: string) => p.startsWith("/transactions"),
   },
@@ -47,7 +47,7 @@ const NAV = [
 const FOOTER_NAV = [
   {
     href: "/settings",
-    label: "Settings",
+    label: "הגדרות",
     Icon: SettingsIcon,
     match: (p: string) => p.startsWith("/settings"),
   },
@@ -57,7 +57,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" side="right">
       <SidebarHeader className="px-3 pb-1 pt-3">
         <Link
           href="/"
@@ -78,7 +78,7 @@ export function AppSidebar() {
               Spent
             </div>
             <div className="mt-px text-[10px] font-semibold leading-tight tracking-[0.08em] text-muted-foreground">
-              YOUR MONEY · OPEN SOURCE
+              הכסף שלך · קוד פתוח
             </div>
           </div>
         </Link>
@@ -142,10 +142,10 @@ export function AppSidebar() {
                   rel="noreferrer"
                 >
                   <Star />
-                  <span>Star on GitHub</span>
+                  <span>כוכב ב-GitHub</span>
                 </a>
               }
-              tooltip="Star on GitHub"
+              tooltip="כוכב ב-GitHub"
             />
           </SidebarMenuItem>
         </SidebarMenu>

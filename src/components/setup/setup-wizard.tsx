@@ -19,19 +19,19 @@ export type SetupMode = "first-run" | "new-workspace";
 type WizardStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 const FIRST_RUN_STEPS = [
-  { n: 1 as const, label: "Connect" },
+  { n: 1 as const, label: "חיבור" },
   { n: 2 as const, label: "AI" },
-  { n: 5 as const, label: "Target" },
-  { n: 3 as const, label: "Budgets" },
-  { n: 4 as const, label: "Done" },
+  { n: 5 as const, label: "יעד" },
+  { n: 3 as const, label: "תקציבים" },
+  { n: 4 as const, label: "סיום" },
 ];
 
 const NEW_WORKSPACE_STEPS = [
-  { n: 0 as const, label: "Name" },
-  { n: 1 as const, label: "Connect" },
-  { n: 5 as const, label: "Target" },
-  { n: 3 as const, label: "Budgets" },
-  { n: 4 as const, label: "Done" },
+  { n: 0 as const, label: "שם" },
+  { n: 1 as const, label: "חיבור" },
+  { n: 5 as const, label: "יעד" },
+  { n: 3 as const, label: "תקציבים" },
+  { n: 4 as const, label: "סיום" },
 ];
 
 export function SetupWizard({ mode = "first-run" }: { mode?: SetupMode }) {
@@ -54,7 +54,7 @@ export function SetupWizard({ mode = "first-run" }: { mode?: SetupMode }) {
       setStep(1);
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : "Failed to create workspace"
+        err instanceof Error ? err.message : "יצירת סביבת עבודה נכשלה"
       );
     } finally {
       setCreating(false);
@@ -77,7 +77,7 @@ export function SetupWizard({ mode = "first-run" }: { mode?: SetupMode }) {
           rel="noreferrer"
           className="hidden text-xs text-muted-foreground hover:text-foreground md:inline"
         >
-          Docs ↗
+          תיעוד ↗
         </a>
       </header>
 
@@ -149,7 +149,7 @@ function BrandMark() {
           Spent
         </div>
         <div className="mt-1 text-[8px] font-bold tracking-[0.18em] text-muted-foreground">
-          YOUR MONEY · OPEN SOURCE
+          הכסף שלך · קוד פתוח
         </div>
       </div>
     </div>

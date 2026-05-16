@@ -86,7 +86,7 @@ export function OllamaModelStatus({ ollamaUrl, model }: OllamaModelStatusProps) 
           prev && !prev.includes(model) ? [...prev, model] : prev
         );
       } else if (event.type === "error") {
-        setPullError(event.data.message ?? "Failed to download the model.");
+        setPullError(event.data.message ?? "הורדת המודל נכשלה.");
         setPullState(null);
       }
     });
@@ -151,8 +151,7 @@ function ModelStatusInner({
           />
         </svg>
         <span>
-          <span className="font-medium">{modelName}</span> is installed and
-          ready.
+          <span className="font-medium">{modelName}</span> מותקן ומוכן.
         </span>
       </div>
     );
@@ -175,14 +174,14 @@ function ModelStatusInner({
         <div className="flex items-center justify-between text-sm">
           <span className="font-medium">
             {pullState.status === "starting"
-              ? "Starting download..."
+              ? "מתחיל הורדה..."
               : pullState.status}
           </span>
           <button
             onClick={onCancel}
             className="text-xs text-muted-foreground hover:text-foreground"
           >
-            Cancel
+            ביטול
           </button>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -197,7 +196,7 @@ function ModelStatusInner({
           </span>
           <span>
             {speed}
-            {eta ? ` · ~${eta} left` : ""}
+            {eta ? ` · ~${eta} נותרו` : ""}
           </span>
         </div>
       </div>
@@ -209,10 +208,9 @@ function ModelStatusInner({
       <div className="space-y-3 rounded-xl border border-border bg-card/60 p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <div className="text-sm font-medium">Don&apos;t have Ollama yet?</div>
+            <div className="text-sm font-medium">עדיין אין לך Ollama?</div>
             <p className="text-xs text-muted-foreground">
-              Ollama is a free, local AI that runs on your machine. It takes
-              about a minute to install.
+              Ollama הוא AI חינמי ומקומי שפועל על המכשיר שלך. ההתקנה לוקחת כדקה.
             </p>
           </div>
           <a
@@ -221,21 +219,19 @@ function ModelStatusInner({
             rel="noreferrer"
             className={buttonVariants({ size: "sm" })}
           >
-            Get Ollama
+            קבל Ollama
             <ExternalLink className="size-3.5" />
           </a>
         </div>
         <ol className="space-y-1 pl-5 text-xs text-muted-foreground list-decimal marker:text-muted-foreground/70">
-          <li>Download and run the installer from ollama.com.</li>
-          <li>Launch Ollama (it runs in the menu bar or system tray).</li>
+          <li>הורד והפעל את המתקין מ-ollama.com.</li>
+          <li>הפעל את Ollama (פועל בשורת התפריטים או במגש המערכת).</li>
           <li>
-            Come back here. Spent auto-starts Ollama and lets you download
-            the model.
+            חזור לכאן. Spent יפעיל את Ollama אוטומטית ויאפשר לך להוריד את המודל.
           </li>
         </ol>
         <p className="text-xs text-destructive">
-          Couldn&apos;t reach Ollama at this URL. If you&apos;ve already
-          installed it, double-check the URL above.
+          לא ניתן להגיע ל-Ollama בכתובת URL זו. אם כבר התקנת אותו, בדוק שוב את ה-URL למעלה.
         </p>
       </div>
     );
@@ -245,17 +241,17 @@ function ModelStatusInner({
     <div className="space-y-2 rounded-md border border-dashed bg-muted/20 p-3">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <div className="text-sm font-medium">Model not installed</div>
+          <div className="text-sm font-medium">המודל לא מותקן</div>
           <p className="text-xs text-muted-foreground">
-            Download <span className="font-medium">{modelName}</span> now
+            הורד את <span className="font-medium">{modelName}</span> עכשיו
             {modelInfo
-              ? ` (~${modelInfo.sizeGb} GB, a few minutes depending on your connection)`
+              ? ` (~${modelInfo.sizeGb} GB, כמה דקות בהתאם לחיבור שלך)`
               : ""}
-            . You only need to do this once.
+            . צריך לעשות זאת פעם אחת בלבד.
           </p>
         </div>
         <Button size="sm" onClick={onPull}>
-          Download
+          הורד
         </Button>
       </div>
       {pullError && <p className="text-xs text-destructive">{pullError}</p>}

@@ -21,56 +21,56 @@ interface NavItem {
 
 const GROUPS: { title: string; items: NavItem[] }[] = [
   {
-    title: "General",
+    title: "כללי",
     items: [
       {
         href: "/settings/general",
-        label: "General",
+        label: "כללי",
         Icon: SlidersHorizontal,
         match: (p) => p === "/settings/general" || p === "/settings",
       },
       {
         href: "/settings/appearance",
-        label: "Appearance",
+        label: "מראה",
         Icon: Palette,
         match: (p) => p.startsWith("/settings/appearance"),
       },
     ],
   },
   {
-    title: "Connections",
+    title: "חיבורים",
     items: [
       {
         href: "/settings/bank",
-        label: "Bank accounts",
+        label: "חשבונות בנק",
         Icon: Landmark,
         match: (p) => p.startsWith("/settings/bank"),
       },
       {
         href: "/settings/ai",
-        label: "AI provider",
+        label: "ספק AI",
         Icon: Sparkles,
         match: (p) => p.startsWith("/settings/ai"),
       },
     ],
   },
   {
-    title: "Categories",
+    title: "קטגוריות",
     items: [
       {
         href: "/settings/categories",
-        label: "Categories",
+        label: "קטגוריות",
         Icon: Layers,
         match: (p) => p.startsWith("/settings/categories"),
       },
     ],
   },
   {
-    title: "Advanced",
+    title: "מתקדם",
     items: [
       {
         href: "/settings/data",
-        label: "Data & privacy",
+        label: "נתונים ופרטיות",
         Icon: ShieldAlert,
         match: (p) => p.startsWith("/settings/data"),
       },
@@ -84,10 +84,10 @@ export function SettingsSidebar() {
     <aside className="hidden w-56 shrink-0 border-r border-border/40 bg-card/30 md:flex md:flex-col">
       <div className="px-5 pt-6 pb-3">
         <div className="font-serif text-xl leading-none tracking-tight">
-          Settings
+          הגדרות
         </div>
         <div className="mt-1 text-[11px] text-muted-foreground">
-          Tune Spent to fit you.
+          התאם את Spent לצרכיך.
         </div>
       </div>
       <nav className="flex-1 overflow-y-auto px-2 pb-6">

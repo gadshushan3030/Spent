@@ -117,13 +117,13 @@ export function BudgetsStep({ onComplete, onBack }: BudgetsStepProps) {
     <div className="mx-auto w-full max-w-[520px] space-y-6">
       <header className="space-y-2">
         <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-          Step 4 of 5
+          שלב 4 מתוך 5
         </div>
         <h1 className="font-serif text-4xl leading-[1.08] tracking-tight">
-          Set a budget for each category
+          קבע תקציב לכל קטגוריה
         </h1>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Type an amount for the ones you want to cap. Leave blank to just track.
+          הקלד סכום לאלה שתרצה להגביל. השאר ריק למעקב בלבד.
         </p>
       </header>
 
@@ -151,21 +151,21 @@ export function BudgetsStep({ onComplete, onBack }: BudgetsStepProps) {
 
       <div className="flex items-center justify-between text-[11px] text-muted-foreground">
         <span>
-          {budgeted.length} of {categories.length} budgeted
+          {budgeted.length} מתוך {categories.length} עם תקציב
         </span>
         {total > 0 && (
           <span className="font-bold tabular-nums text-foreground">
-            ₪ {total.toLocaleString()} / month
+            ₪ {total.toLocaleString()} / חודש
           </span>
         )}
       </div>
 
       <footer className="flex items-center justify-between pt-2">
         <Button variant="outline" onClick={onBack} disabled={saving}>
-          ← Back
+          ← חזור
         </Button>
         <Button onClick={() => finish(true)} disabled={saving || isLoading}>
-          {saving ? "Saving..." : "Continue →"}
+          {saving ? "שומר..." : "המשך ←"}
         </Button>
       </footer>
 
@@ -176,7 +176,7 @@ export function BudgetsStep({ onComplete, onBack }: BudgetsStepProps) {
           disabled={saving}
           className="text-[11px] text-muted-foreground underline decoration-muted-foreground/30 underline-offset-4 transition-colors hover:text-foreground"
         >
-          Skip, auto-set from spending after first sync
+          דלג, הגדר אוטומטית מהוצאות לאחר הסנכרון הראשון
         </button>
       </div>
     </div>

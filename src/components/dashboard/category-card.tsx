@@ -99,7 +99,7 @@ export function CategoryCard({ data, onClick }: CategoryCardProps) {
                     background: tint(data.categoryColor, 0.22),
                     color: shade(data.categoryColor),
                   }}
-                  title={`${data.childCount} sub-categories`}
+                  title={`${data.childCount} תת-קטגוריות`}
                 >
                   {data.childCount}
                 </span>
@@ -112,7 +112,7 @@ export function CategoryCard({ data, onClick }: CategoryCardProps) {
                       "color-mix(in oklch, var(--status-heads-up) 18%, transparent)",
                     color: "var(--status-heads-up)",
                   }}
-                  title={`${data.needsReviewCount} need review`}
+                  title={`${data.needsReviewCount} דורשים בדיקה`}
                 >
                   <HelpCircle className="h-3 w-3" />
                   {data.needsReviewCount}
@@ -120,19 +120,19 @@ export function CategoryCard({ data, onClick }: CategoryCardProps) {
               )}
               {data.isParent && data.budgetSource === "own" && !isTracking && (
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                  own budget
+                  תקציב עצמי
                 </span>
               )}
               {data.isParent && data.budgetSource === "rollup" && !isTracking && (
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                  rolled up
+                  מצטבר
                 </span>
               )}
             </div>
             <div className="mt-0.5 truncate text-xs text-muted-foreground">
               {data.transactionCount}{" "}
-              {data.transactionCount === 1 ? "transaction" : "transactions"}
-              {data.topMerchant ? ` · mostly ${data.topMerchant}` : ""}
+              {data.transactionCount === 1 ? "עסקה" : "עסקאות"}
+              {data.topMerchant ? ` · בעיקר ${data.topMerchant}` : ""}
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@ export function CategoryCard({ data, onClick }: CategoryCardProps) {
             <VsTypical vsTypical={data.vsTypical} color={data.categoryColor} />
           ) : (
             <>
-              {data.budget === 0 && <span>no budget set</span>}
+              {data.budget === 0 && <span>ללא תקציב</span>}
               {vsLast != null && <VsLastMonth pct={vsLast} />}
             </>
           )}
@@ -174,21 +174,21 @@ export function CategoryCard({ data, onClick }: CategoryCardProps) {
             {data.budget > 0 ? (
               data.spent <= data.budget ? (
                 <>
-                  {formatCurrency(data.remaining)} left
+                  {formatCurrency(data.remaining)} נותר
                   {data.perDayRemaining != null && (
-                    <> · ≈ {formatCurrency(data.perDayRemaining)}/day</>
+                    <> · ≈ {formatCurrency(data.perDayRemaining)}/יום</>
                   )}
                 </>
               ) : (
                 <>
                   <span className="text-[var(--status-over)]">
-                    {formatCurrency(data.spent - data.budget)} over
+                    {formatCurrency(data.spent - data.budget)} חריגה
                   </span>
-                  {" · ease up"}
+                  {" · הפחת הוצאות"}
                 </>
               )
             ) : (
-              <span>set a budget to track pacing</span>
+              <span>הגדר תקציב למעקב קצב</span>
             )}
           </div>
           <StatusPill status={data.status} />
@@ -215,7 +215,7 @@ function VsTypical({
     <span className="flex items-center gap-1 tabular-nums">
       <span style={{ color: accent }}>{arrow}</span>
       {Math.abs(rounded) >= 5 && <span>{Math.abs(rounded)}%</span>}
-      <span>vs {formatCurrency(vsTypical.typical)} typical</span>
+      <span>לעומת {formatCurrency(vsTypical.typical)} טיפוסי</span>
     </span>
   );
 }
@@ -270,12 +270,12 @@ function ProgressDonut({
 function StatusPill({ status }: { status: BudgetStatus }) {
   const meta: Record<BudgetStatus, { label: string; color: string }> = {
     "plenty-left": {
-      label: "Plenty left",
+      label: "נותר הרבה",
       color: "var(--status-plenty-left)",
     },
-    "on-track": { label: "On track", color: "var(--status-on-track)" },
-    "heads-up": { label: "Heads up", color: "var(--status-heads-up)" },
-    over: { label: "Over", color: "var(--status-over)" },
+    "on-track": { label: "בקצב", color: "var(--status-on-track)" },
+    "heads-up": { label: "שים לב", color: "var(--status-heads-up)" },
+    over: { label: "חריגה", color: "var(--status-over)" },
   };
   const m = meta[status];
   return (
@@ -298,7 +298,7 @@ function StatusPill({ status }: { status: BudgetStatus }) {
 function VsLastMonth({ pct }: { pct: number }) {
   const rounded = Math.round(pct);
   if (Math.abs(rounded) < 1) {
-    return <span className="text-muted-foreground">flat vs last month</span>;
+    return <span className="text-muted-foreground">ללא שינוי לעומת חודש קודם</span>;
   }
   const up = rounded > 0;
   return (
@@ -309,7 +309,7 @@ function VsLastMonth({ pct }: { pct: number }) {
           : "text-[var(--status-on-track)]"
       }
     >
-      {up ? "↑" : "↓"} {Math.abs(rounded)}% vs last month
+      {up ? "↑" : "↓"} {Math.abs(rounded)}% לעומת חודש קודם
     </span>
   );
 }

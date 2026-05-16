@@ -35,13 +35,21 @@ interface CategoryGridProps {
 }
 
 const FILTER_LABELS: { id: Filter; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "needs-action", label: "Needs action" },
-  { id: "on-track", label: "On track" },
-  { id: "heads-up", label: "Heads up" },
-  { id: "over", label: "Over" },
-  { id: "plenty-left", label: "Plenty left" },
+  { id: "all", label: "הכל" },
+  { id: "needs-action", label: "דורש פעולה" },
+  { id: "on-track", label: "בקצב" },
+  { id: "heads-up", label: "שים לב" },
+  { id: "over", label: "חריגה" },
+  { id: "plenty-left", label: "נותר הרבה" },
 ];
+
+const SORT_LABELS: Record<Sort, string> = {
+  "budgeted-first": "עם תקציב קודם",
+  "most-spent": "הוצאה גבוהה",
+  "least-spent": "הוצאה נמוכה",
+  "over-pace": "חריגה מהקצב",
+  "alphabetical": "לפי א-ב",
+};
 
 function applySort(list: CategoryWithData[], sort: Sort): CategoryWithData[] {
   const copy = [...list];
@@ -150,7 +158,7 @@ export function CategoryGrid({
     const hasUncategorized = periodTotal > 0;
     return (
       <div className="space-y-5">
-        <h2 className="font-serif text-2xl">Budgets</h2>
+        <h2 className="font-serif text-2xl">תקציבים</h2>
         <div className="rounded-3xl border border-border bg-card p-10 md:p-14">
           <div className="mx-auto max-w-md text-center">
             <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -171,21 +179,19 @@ export function CategoryGrid({
             {hasUncategorized ? (
               <>
                 <h3 className="font-serif text-2xl">
-                  Transactions aren&apos;t categorized yet
+                  העסקאות עדיין לא קוטלגו
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  You have spending this month, but none of it is assigned to a
-                  category yet. Enable an AI provider in settings and sync, or
-                  assign categories manually from the transactions table below.
+                  יש הוצאות החודש, אך אף אחת מהן לא שויכה לקטגוריה עדיין.
+                  הפעל ספק AI בהגדרות וסנכרן, או שייך קטגוריות ידנית מטבלת העסקאות למטה.
                 </p>
               </>
             ) : (
               <>
-                <h3 className="font-serif text-2xl">No spending yet</h3>
+                <h3 className="font-serif text-2xl">אין הוצאות עדיין</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  When you sync transactions and they get categorized, each
-                  category will show up here with its own budget, pace, and
-                  recent activity.
+                  כאשר תסנכרן עסקאות והן יקוטלגו, כל קטגוריה תופיע כאן עם
+                  התקציב, הקצב והפעילות האחרונה שלה.
                 </p>
               </>
             )}
@@ -199,7 +205,7 @@ export function CategoryGrid({
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <h2 className="font-serif text-2xl">Budgets</h2>
+          <h2 className="font-serif text-2xl">תקציבים</h2>
           <div className="flex flex-wrap gap-1.5">
             {FILTER_LABELS.map((f) => {
               const active = filter === f.id;
@@ -226,17 +232,17 @@ export function CategoryGrid({
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>Sort:</span>
+          <span>מיון:</span>
           <Select value={sort} onValueChange={(v) => v && setSort(v as Sort)}>
             <SelectTrigger className="h-8 w-[150px] cursor-pointer border-none bg-transparent transition-colors duration-200 hover:bg-secondary hover:text-foreground">
-              <SelectValue />
+              <SelectValue>{SORT_LABELS[sort]}</SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="budgeted-first">Budgeted first</SelectItem>
-              <SelectItem value="most-spent">Most spent</SelectItem>
-              <SelectItem value="least-spent">Least spent</SelectItem>
-              <SelectItem value="over-pace">Over pace</SelectItem>
-              <SelectItem value="alphabetical">Alphabetical</SelectItem>
+              <SelectItem value="budgeted-first">עם תקציב קודם</SelectItem>
+              <SelectItem value="most-spent">הוצאה גבוהה</SelectItem>
+              <SelectItem value="least-spent">הוצאה נמוכה</SelectItem>
+              <SelectItem value="over-pace">חריגה מהקצב</SelectItem>
+              <SelectItem value="alphabetical">לפי א-ב</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -244,7 +250,7 @@ export function CategoryGrid({
 
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground">
-          No categories match this filter.
+          אין קטגוריות התואמות לסינון זה.
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -67,17 +67,17 @@ export default function BankSettingsPage() {
   return (
     <>
       <SectionShell
-        title="Bank accounts"
-        description="Connected institutions. Credentials are encrypted with AES-256-GCM and never leave your machine."
+        title="חשבונות בנק"
+        description="מוסדות מחוברים. פרטי הכניסה מוצפנים עם AES-256-GCM ולעולם לא יוצאים מהמכשיר שלך."
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-xs text-muted-foreground">
             {integrations.length}{" "}
-            {integrations.length === 1 ? "bank" : "banks"} connected
+            {integrations.length === 1 ? "בנק" : "בנקים"} מחוברים
             {lastSync ? (
               <>
                 {" "}
-                · Last sync{" "}
+                · סנכרון אחרון{" "}
                 <span className="text-foreground/80">
                   {formatRelative(lastSync)}
                 </span>
@@ -93,7 +93,7 @@ export default function BankSettingsPage() {
               className="gap-1.5"
             >
               <RefreshCw className="h-3.5 w-3.5" />
-              {anySyncing ? "Syncing…" : "Sync all"}
+              {anySyncing ? "מסנכרן…" : "סנכרן הכל"}
             </Button>
             {availableToAdd.length > 0 ? (
               <DropdownMenu>
@@ -134,7 +134,7 @@ export default function BankSettingsPage() {
 
         {integrations.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-muted-foreground">
-            No banks connected yet. Click <b>Add bank</b> to connect one.
+            לא מחובר בנק עדיין. לחץ על <b>הוסף בנק</b> לחיבור.
           </div>
         ) : (
           <div className="overflow-hidden rounded-2xl border border-border bg-card">
@@ -178,10 +178,10 @@ export default function BankSettingsPage() {
                           />
                         </div>
                         <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                          {integration.transactionCount} transactions
+                          {integration.transactionCount} עסקאות
                           {integration.lastSyncAt
-                            ? ` · last sync ${formatRelative(integration.lastSyncAt)}`
-                            : " · never synced"}
+                            ? ` · סנכרון אחרון ${formatRelative(integration.lastSyncAt)}`
+                            : " · מעולם לא סונכרן"}
                         </div>
                       </div>
                     </button>
@@ -227,20 +227,20 @@ function StatusPill({
   if (syncing) {
     return (
       <span className="inline-flex items-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-        <Loader2 className="h-3 w-3 animate-spin" /> Syncing
+        <Loader2 className="h-3 w-3 animate-spin" /> מסנכרן
       </span>
     );
   }
   if (!lastSyncAt) {
     return (
       <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[10px] text-amber-700 dark:text-amber-300">
-        <CircleAlert className="h-3 w-3" /> Never synced
+        <CircleAlert className="h-3 w-3" /> מעולם לא סונכרן
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] text-emerald-700 dark:text-emerald-300">
-      <CircleCheck className="h-3 w-3" /> Connected
+      <CircleCheck className="h-3 w-3" /> מחובר
     </span>
   );
 }
@@ -258,7 +258,7 @@ function SyncButton({
     return (
       <span className="inline-flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-        <span className="hidden sm:inline">{stage || "Syncing…"}</span>
+        <span className="hidden sm:inline">{stage || "מסנכרן…"}</span>
       </span>
     );
   }
@@ -270,7 +270,7 @@ function SyncButton({
       onClick={onClick}
     >
       <RefreshCw className="h-3.5 w-3.5" />
-      Sync
+      סנכרן
     </Button>
   );
 }
@@ -278,9 +278,9 @@ function SyncButton({
 function formatRelative(iso: string): string {
   const then = new Date(iso.replace(" ", "T") + "Z");
   const diffSec = (Date.now() - then.getTime()) / 1000;
-  if (diffSec < 60) return "just now";
-  if (diffSec < 3600) return `${Math.round(diffSec / 60)}m ago`;
-  if (diffSec < 86400) return `${Math.round(diffSec / 3600)}h ago`;
-  if (diffSec < 86400 * 7) return `${Math.round(diffSec / 86400)}d ago`;
+  if (diffSec < 60) return "זה עתה";
+  if (diffSec < 3600) return `לפני ${Math.round(diffSec / 60)}ד׳`;
+  if (diffSec < 86400) return `לפני ${Math.round(diffSec / 3600)}ש׳`;
+  if (diffSec < 86400 * 7) return `לפני ${Math.round(diffSec / 86400)} ימים`;
   return then.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }

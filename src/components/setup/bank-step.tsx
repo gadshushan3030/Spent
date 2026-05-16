@@ -107,8 +107,8 @@ export function BankStep({ onComplete }: BankStepProps) {
 
   const readyCountLabel =
     integrations.length === 1
-      ? "One account ready. Add another or move on."
-      : `${NUMBER_WORDS[integrations.length] ?? integrations.length} accounts ready. Add another or move on.`;
+      ? "חשבון אחד מוכן. הוסף עוד או המשך."
+      : `${integrations.length} חשבונות מוכנים. הוסף עוד או המשך.`;
 
   return (
     <div className="mx-auto flex w-full max-w-[520px] flex-col gap-6">
@@ -123,20 +123,18 @@ export function BankStep({ onComplete }: BankStepProps) {
                 onClick={() => setSub("ready")}
                 className="self-start text-xs font-medium text-muted-foreground hover:text-foreground"
               >
-                ← back to connected accounts
+                ← חזור לחשבונות המחוברים
               </button>
             )}
             <header className="space-y-2">
               <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Step 1 of 5 · Accounts
+                שלב 1 מתוך 5 · חשבונות
               </div>
               <h1 className="font-serif text-4xl leading-[1.08] tracking-tight">
-                Which accounts should Spent watch?
+                אילו חשבונות Spent ינטר?
               </h1>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Add every bank and card you want to track. Credentials are
-                encrypted with AES-256 and stored on this machine only, never
-                leaving your computer.
+                הוסף כל בנק וכרטיס שתרצה לעקוב אחריו. פרטי הכניסה מוצפנים עם AES-256 ושמורים רק על המכשיר הזה, ולעולם לא יוצאים ממנו.
               </p>
             </header>
 
@@ -152,16 +150,16 @@ export function BankStep({ onComplete }: BankStepProps) {
             />
 
             <p className="text-xs italic text-muted-foreground">
-              Don&apos;t see your bank?{" "}
+              לא רואה את הבנק שלך?{" "}
               <a
                 href="https://github.com/Shaya16/Spent/issues"
                 target="_blank"
                 rel="noreferrer"
                 className="text-foreground underline decoration-primary underline-offset-2"
               >
-                Open an issue
+                פתח issue
               </a>{" "}
-              and we&apos;ll add a scraper.
+              ונוסיף סורק.
             </p>
           </div>
         )}
@@ -176,19 +174,19 @@ export function BankStep({ onComplete }: BankStepProps) {
               onClick={handleCloseForm}
               className="self-start text-xs font-medium text-muted-foreground hover:text-foreground"
             >
-              ← back to providers
+              ← חזור לספקים
             </button>
             <header className="space-y-2">
               <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Step 1 of 5 · Connecting {selected.name}
+                שלב 1 מתוך 5 · מתחבר ל-{selected.name}
               </div>
               <h1 className="font-serif text-4xl leading-[1.08] tracking-tight">
-                Sign in to {selected.name}
+                כניסה ל-{selected.name}
               </h1>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Same credentials you use at{" "}
+                אותם פרטי כניסה שאתה משתמש בהם ב-
                 <span className="text-foreground">{selected.domain}</span>.
-                They&apos;re encrypted locally, nothing leaves this machine.
+                מוצפנים מקומית, כלום לא יוצא מהמכשיר הזה.
               </p>
             </header>
 
@@ -208,19 +206,19 @@ export function BankStep({ onComplete }: BankStepProps) {
           >
             <header className="space-y-2">
               <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Step 1 of 5 · Accounts
+                שלב 1 מתוך 5 · חשבונות
               </div>
               <h1 className="font-serif text-4xl leading-[1.08] tracking-tight">
                 {readyCountLabel}
               </h1>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                You can always come back from Settings to add or remove accounts.
+                תמיד ניתן לחזור מההגדרות להוסיף או להסיר חשבונות.
               </p>
             </header>
 
             <div className="w-full space-y-2 text-left">
               <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                Connected · {integrations.length}
+                מחוברים · {integrations.length}
               </div>
               <AnimatePresence initial={false}>
                 {integrations.map((integ) => {
@@ -249,19 +247,19 @@ export function BankStep({ onComplete }: BankStepProps) {
                           {info.name}
                         </div>
                         <div className="mt-0.5 text-[11px] text-muted-foreground">
-                          {info.kind === "bank" ? "Bank" : "Credit cards"} ·{" "}
+                          {info.kind === "bank" ? "בנק" : "כרטיסי אשראי"} ·{" "}
                           {info.credentialFields.length} credentials
                         </div>
                       </div>
                       <span className="rounded-full bg-primary/15 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-primary">
-                        ✓ Ready
+                        ✓ מוכן
                       </span>
                       <button
                         type="button"
                         onClick={() => handleEdit(info.id)}
                         className="rounded-md px-2 py-1 text-xs font-medium hover:bg-accent"
                       >
-                        Edit
+                        ערוך
                       </button>
                       <RemoveButton
                         provider={integ.provider}
@@ -278,13 +276,13 @@ export function BankStep({ onComplete }: BankStepProps) {
                 variant="outline"
                 onClick={() => setSub("pick")}
               >
-                + Add another account
+                + הוסף חשבון נוסף
               </Button>
               <Button
                 onClick={onComplete}
                 disabled={integrations.length === 0}
               >
-                Continue to AI →
+                המשך ל-AI ←
               </Button>
             </footer>
           </div>
@@ -293,7 +291,7 @@ export function BankStep({ onComplete }: BankStepProps) {
       <div className="mt-2 flex w-full items-center justify-between text-[10px] text-muted-foreground/80">
         <span>🔐 AES-256-GCM · stored locally</span>
         <span>
-          {integrations.length} of {BANK_PROVIDERS.length} providers connected
+          {integrations.length} מתוך {BANK_PROVIDERS.length} ספקים מחוברים
         </span>
       </div>
     </div>
@@ -323,20 +321,20 @@ function PickerCard({
     <div className="w-full rounded-2xl border border-border bg-card p-5 text-left shadow-sm">
       <div className="mb-3 flex items-baseline justify-between">
         <div className="text-[11px] font-bold tracking-tight">
-          Supported providers · {total}
+          ספקים נתמכים · {total}
         </div>
         <FilterPills value={filter} onChange={onFilter} />
       </div>
       <Input
         value={search}
         onChange={(e) => onSearch(e.target.value)}
-        placeholder="Search by name..."
+        placeholder="חיפוש לפי שם..."
         className="mb-3"
       />
       <div className="flex flex-col gap-0.5">
         {providers.length === 0 ? (
           <div className="px-2 py-6 text-center text-xs text-muted-foreground">
-            No providers match.
+            לא נמצאו ספקים תואמים.
           </div>
         ) : (
           providers.map((p) => {
@@ -400,7 +398,7 @@ function KindTag({ kind }: { kind: BankKind }) {
     <span
       className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${cls}`}
     >
-      {kind === "bank" ? "Bank" : "Card"}
+      {kind === "bank" ? "בנק" : "כרטיס"}
     </span>
   );
 }
@@ -413,9 +411,9 @@ function FilterPills({
   onChange: (v: "all" | BankKind) => void;
 }) {
   const options: { id: "all" | BankKind; label: string }[] = [
-    { id: "all", label: "All" },
-    { id: "bank", label: "Banks" },
-    { id: "card", label: "Cards" },
+    { id: "all", label: "הכל" },
+    { id: "bank", label: "בנקים" },
+    { id: "card", label: "כרטיסים" },
   ];
   return (
     <div className="flex gap-0.5 rounded-full border border-border bg-background p-0.5">
@@ -504,7 +502,7 @@ function CredentialForm({
       }
     } catch {
       setStatus("testing-fail");
-      setErrorMsg("Connection test failed.");
+      setErrorMsg("בדיקת החיבור נכשלה.");
     } finally {
       setTesting(false);
     }
@@ -521,7 +519,7 @@ function CredentialForm({
       setTimeout(onSaved, 500);
     } catch {
       setStatus("testing-fail");
-      setErrorMsg("Failed to save credentials.");
+      setErrorMsg("שמירת פרטי הכניסה נכשלה.");
     } finally {
       setSaving(false);
     }
@@ -542,7 +540,7 @@ function CredentialForm({
             {info.name}
           </div>
           <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-            {info.kind === "bank" ? "Bank" : "Credit cards"}
+            {info.kind === "bank" ? "בנק" : "כרטיסי אשראי"}
           </div>
         </div>
         <button
@@ -557,7 +555,7 @@ function CredentialForm({
 
       {!loaded ? (
         <div className="py-8 text-center text-sm text-muted-foreground">
-          Loading current values...
+          טוען ערכים נוכחיים...
         </div>
       ) : (
         <div className="space-y-3">
@@ -610,7 +608,7 @@ function CredentialForm({
                 )}
                 {tooShort && (
                   <p className="text-[11px] text-destructive">
-                    Must be exactly {field.exactLength} digits.
+                    חייב להיות בדיוק {field.exactLength} ספרות.
                   </p>
                 )}
               </div>
@@ -631,7 +629,7 @@ function CredentialForm({
                 exit={{ opacity: 0 }}
                 className="rounded-md bg-primary/10 px-3 py-2 text-xs font-medium text-primary"
               >
-                ✓ Connection works. Click save to finish.
+                ✓ החיבור עובד. לחץ שמור לסיום.
               </motion.div>
             )}
             {status === "testing-fail" && (
@@ -651,7 +649,7 @@ function CredentialForm({
                 exit={{ opacity: 0 }}
                 className="rounded-md bg-primary/10 px-3 py-2 text-xs font-medium text-primary"
               >
-                ✓ Saved
+                ✓ נשמר
               </motion.div>
             )}
           </AnimatePresence>
@@ -663,21 +661,21 @@ function CredentialForm({
               disabled={!valid || testing || saving}
               className="flex-1 rounded-full"
             >
-              {testing ? "Testing..." : "Test connection"}
+              {testing ? "בודק..." : "בדוק חיבור"}
             </Button>
             <Button
               onClick={handleSave}
               disabled={!valid || saving}
               className="flex-1 rounded-full"
             >
-              {saving ? "Saving..." : isEdit ? "Save changes" : "Save & continue"}
+              {saving ? "שומר..." : isEdit ? "שמור שינויים" : "שמור והמשך"}
             </Button>
           </div>
 
           <div className="mt-2 flex items-start gap-2 rounded-md bg-muted/40 p-2 text-[11px] text-muted-foreground">
             <span>🔐</span>
             <span>
-              AES-256-GCM · stored on this machine only. Never sent to a server.
+              AES-256-GCM · שמור רק על המכשיר הזה. לעולם לא נשלח לשרת.
             </span>
           </div>
         </div>
@@ -703,7 +701,7 @@ function RemoveButton({
         onClick={() => setConfirming(true)}
         className="rounded-md px-2 py-1 text-xs font-medium text-destructive hover:bg-destructive/10"
       >
-        Remove
+        הסר
       </button>
     );
   }
@@ -715,7 +713,7 @@ function RemoveButton({
         onClick={() => setConfirming(false)}
         className="rounded-md px-2 py-1 text-[11px] text-muted-foreground hover:bg-accent"
       >
-        Cancel
+        ביטול
       </button>
       <button
         type="button"
@@ -728,7 +726,7 @@ function RemoveButton({
         disabled={removing}
         className="rounded-md bg-destructive px-2 py-1 text-[11px] font-medium text-destructive-foreground"
       >
-        {removing ? "..." : "Confirm"}
+        {removing ? "..." : "אשר"}
       </button>
     </div>
   );

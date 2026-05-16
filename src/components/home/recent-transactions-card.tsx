@@ -12,9 +12,9 @@ interface Props {
 export function RecentTransactionsCard({ items }: Props) {
   if (items.length === 0) {
     return (
-      <CardShell label="Recent activity">
+      <CardShell label="פעילות אחרונה">
         <div className="flex flex-1 items-center justify-center py-6 text-sm text-muted-foreground">
-          No transactions yet. Sync your bank to see activity here.
+          אין עסקאות עדיין. סנכרן את הבנק כדי לראות פעילות כאן.
         </div>
       </CardShell>
     );
@@ -22,8 +22,8 @@ export function RecentTransactionsCard({ items }: Props) {
 
   return (
     <CardShell
-      label="Recent activity"
-      action={<CardAction href="/transactions">All transactions →</CardAction>}
+      label="פעילות אחרונה"
+      action={<CardAction href="/transactions">כל העסקאות ←</CardAction>}
     >
       <ul className="-mx-2 divide-y divide-border/60">
         {items.map((txn) => (
@@ -47,7 +47,7 @@ export function RecentTransactionsCard({ items }: Props) {
                     />
                   ) : (
                     <span className="text-xs text-muted-foreground">
-                      Uncategorized
+                      ללא קטגוריה
                     </span>
                   )}
                 </div>

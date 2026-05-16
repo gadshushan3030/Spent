@@ -30,8 +30,8 @@ export default function DataSettingsPage() {
 
   return (
     <SectionShell
-      title="Data & privacy"
-      description="Spent runs locally. Your credentials are encrypted at rest and never leave your machine."
+      title="נתונים ופרטיות"
+      description="Spent פועל מקומית. פרטי הכניסה שלך מוצפנים במנוחה ולעולם לא יוצאים מהמכשיר שלך."
     >
       {settings ? (
         <ShowBrowserCard initial={settings.showBrowser} />
@@ -41,8 +41,8 @@ export default function DataSettingsPage() {
         </SettingCard>
       )}
       <SettingCard
-        title="How your data is stored"
-        description="Bank credentials and your Claude API key are encrypted with AES-256-GCM. The encryption key lives at data/.encryption-key on your machine (gitignored) and is auto-generated on first run. All transaction data lives in data/spent.db. To reset everything, stop the dev server and delete the data/ directory."
+        title="איך הנתונים שלך מאוחסנים"
+        description="פרטי הכניסה לבנק ומפתח ה-Claude API שלך מוצפנים עם AES-256-GCM. מפתח ההצפנה נמצא ב-data/.encryption-key במכשירך (gitignored) ומופק אוטומטית בהרצה הראשונה. כל נתוני העסקאות נמצאים ב-data/spent.db. לאיפוס הכול, עצור את שרת הפיתוח ומחק את תיקיית data/."
       >
         <div className="rounded-lg border border-dashed bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
           <code>data/spent.db</code> · <code>data/.encryption-key</code>
@@ -70,7 +70,7 @@ function DangerZone() {
       setConfirmText("");
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Delete failed");
+      toast.error(err instanceof Error ? err.message : "המחיקה נכשלה");
     },
   });
 
@@ -93,12 +93,9 @@ function DangerZone() {
             />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="font-medium">Delete all transaction data</h3>
+            <h3 className="font-medium">מחק את כל נתוני העסקאות</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Wipes every synced transaction, sync run, and merchant-memory
-              entry. Your bank credentials, AI settings, budgets, and categories
-              stay put. Use this to start over from a clean slate. Cannot be
-              undone.
+              מוחק כל עסקה מסונכרנת, הרצת סנכרון, ורשומות זיכרון סוחר. פרטי הכניסה לבנק, הגדרות AI, תקציבים וקטגוריות נשמרים. השתמש בזה להתחיל מחדש. לא ניתן לבטל.
             </p>
           </div>
           <Button
@@ -113,7 +110,7 @@ function DangerZone() {
             onClick={() => setConfirmOpen(true)}
           >
             <Trash2 className="h-3.5 w-3.5" />
-            Delete data
+            מחק נתונים
           </Button>
         </div>
       </div>
@@ -143,23 +140,23 @@ function DangerZone() {
             </div>
             <div>
               <DialogTitle className="font-serif text-xl font-normal">
-                Delete all transaction data?
+                למחוק את כל נתוני העסקאות?
               </DialogTitle>
               <DialogDescription className="mt-1 text-xs">
-                This cannot be undone.
+                לא ניתן לבטל פעולה זו.
               </DialogDescription>
             </div>
           </div>
 
           <div className="space-y-3 pt-2 text-sm">
-            <p className="text-muted-foreground">This will permanently remove:</p>
+            <p className="text-muted-foreground">פעולה זו תסיר לצמיתות:</p>
             <ul className="space-y-1 pl-5 text-xs text-muted-foreground">
-              <li className="list-disc">All transactions</li>
-              <li className="list-disc">All sync run history</li>
-              <li className="list-disc">All merchant-memory entries</li>
+              <li className="list-disc">כל העסקאות</li>
+              <li className="list-disc">כל היסטוריית הרצות הסנכרון</li>
+              <li className="list-disc">כל רשומות זיכרון הסוחר</li>
             </ul>
             <p className="text-xs text-muted-foreground">
-              Kept: bank credentials, AI configuration, budgets, categories.
+              נשמר: פרטי כניסה לבנק, הגדרות AI, תקציבים, קטגוריות.
             </p>
 
             <div className="pt-2">
@@ -167,7 +164,7 @@ function DangerZone() {
                 htmlFor="confirm-input"
                 className="text-xs text-muted-foreground"
               >
-                Type <code className="font-mono">delete</code> to confirm
+                הקלד <code className="font-mono">delete</code> לאישור
               </Label>
               <Input
                 id="confirm-input"
@@ -191,7 +188,7 @@ function DangerZone() {
               }}
               disabled={mutation.isPending}
             >
-              Cancel
+              ביטול
             </Button>
             <Button
               size="sm"
@@ -208,7 +205,7 @@ function DangerZone() {
               className="gap-1.5"
             >
               <Trash2 className="h-3.5 w-3.5" />
-              {mutation.isPending ? "Deleting..." : "Delete everything"}
+              {mutation.isPending ? "מוחק..." : "מחק הכל"}
             </Button>
           </div>
         </DialogContent>
@@ -226,8 +223,8 @@ function ShowBrowserCard({ initial }: { initial: boolean }) {
       queryClient.invalidateQueries({ queryKey: ["settings"] });
       toast.success(
         value
-          ? "Browser will be visible on next sync"
-          : "Browser will stay hidden"
+          ? "הדפדפן יהיה גלוי בסנכרון הבא"
+          : "הדפדפן יישאר מוסתר"
       );
     },
   });
@@ -241,11 +238,11 @@ function ShowBrowserCard({ initial }: { initial: boolean }) {
     <SettingCard>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <Label htmlFor="show-browser-toggle">Show browser during sync</Label>
+          <Label htmlFor="show-browser-toggle">הצג דפדפן בזמן סנכרון</Label>
           <p className="text-xs text-muted-foreground">
-            Opens a visible Chromium window so you can watch the scrape happen
-            (useful for debugging or solving 2FA / captcha challenges). Also
-            enables verbose scraper logs in your dev terminal.
+            פותח חלון Chromium גלוי כדי שתוכל לצפות בתהליך הסריקה
+            (שימושי לניפוי שגיאות או פתרון אתגרי 2FA / captcha). גם
+            מפעיל יומני סריקה מפורטים בטרמינל הפיתוח שלך.
           </p>
         </div>
         <Switch
