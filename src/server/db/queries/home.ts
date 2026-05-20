@@ -28,10 +28,12 @@ export function getCashFlow(
     .get(workspaceId, from, to) as { total: number };
   const expenses = db
     .prepare(
-      `SELECT COALESCE(SUM(ABS(charged_amount)), 0) as total
-       FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ?
-         AND status = 'completed' AND kind = 'expense'`
+      `SELECT COALESCE(SUM(ABS(t.charged_amount)), 0) as total
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
+         AND t.status = 'completed' AND t.kind = 'expense'
+         AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')`
     )
     .get(workspaceId, from, to) as { total: number };
   return {
