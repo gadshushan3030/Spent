@@ -208,6 +208,7 @@ export function AIStep({ onComplete, onBack }: AIStepProps) {
                         model={ollamaModel}
                         setModel={setOllamaModel}
                         reachable={ollamaReachable}
+                        installedModels={installedModels}
                         modelInstalled={modelInstalled}
                         pullState={pullState}
                         pullError={pullError}
@@ -356,6 +357,7 @@ function OllamaConfig({
   model,
   setModel,
   reachable,
+  installedModels,
   modelInstalled,
   pullState,
   pullError,
@@ -367,12 +369,26 @@ function OllamaConfig({
   model: string;
   setModel: (v: string) => void;
   reachable: boolean | null;
+  installedModels: string[];
   modelInstalled: boolean;
   pullState: PullState | null;
   pullError: string | null;
   onPull: () => void;
   onCancel: () => void;
 }) {
+  // Merge recommended list with any extra installed models not in it
+  const recommendedNames = new Set(RECOMMENDED_OLLAMA_MODELS.map((m) => m.name));
+  const extraInstalled: OllamaModelInfo[] = installedModels
+    .filter((name) => !recommendedNames.has(name))
+    .map((name) => ({ name, sizeGb: 0, description: "Installed locally." }));
+  const allModels: (OllamaModelInfo & { isInstalled?: boolean })[] = [
+    ...RECOMMENDED_OLLAMA_MODELS.map((m) => ({
+      ...m,
+      isInstalled: installedModels.includes(m.name),
+    })),
+    ...extraInstalled.map((m) => ({ ...m, isInstalled: true })),
+  ];
+
   return (
     <div className="space-y-3 rounded-xl border border-border bg-card/60 p-4">
       <div
@@ -425,7 +441,7 @@ function OllamaConfig({
           Pick a model
         </Label>
         <div className="grid grid-cols-3 gap-1.5">
-          {RECOMMENDED_OLLAMA_MODELS.slice(0, 3).map((m) => (
+          {allModels.map((m) => (
             <button
               key={m.name}
               type="button"
@@ -445,9 +461,14 @@ function OllamaConfig({
                     rec
                   </span>
                 )}
+                {m.isInstalled && !m.recommended && (
+                  <span className="rounded-full bg-green-500/10 px-1 py-0 text-[8px] font-bold uppercase tracking-wider text-green-700 dark:text-green-400">
+                    installed
+                  </span>
+                )}
               </div>
               <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">
-                {m.sizeGb} GB
+                {m.sizeGb > 0 ? `${m.sizeGb} GB` : "local"}
               </div>
               <p className="mt-1 text-[10px] leading-snug text-muted-foreground">
                 {m.description}

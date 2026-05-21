@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Select,
@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { RECOMMENDED_OLLAMA_MODELS, type AppSettings } from "@/lib/types";
-import { getSettings, saveAIConfig } from "@/lib/api";
+import { RECOMMENDED_OLLAMA_MODELS, type AppSettings, type OllamaModelInfo } from "@/lib/types";
+import { getSettings, saveAIConfig, listOllamaModels } from "@/lib/api";
 import { OllamaModelStatus } from "./ollama-model-status";
 import { SectionShell, SettingCard } from "./section-shell";
 import { toast } from "sonner";
@@ -50,6 +50,22 @@ function AIForm({ settings }: { settings: AppSettings }) {
   const [apiKey, setApiKey] = useState("");
   const [ollamaUrl, setOllamaUrl] = useState(settings.ollamaUrl);
   const [ollamaModel, setOllamaModel] = useState(settings.ollamaModel);
+  const [installedModels, setInstalledModels] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (provider !== "ollama") return;
+    listOllamaModels(ollamaUrl).then(({ models, error }) => {
+      if (!error) setInstalledModels(models);
+    }).catch(() => {});
+  }, [provider, ollamaUrl]);
+
+  const recommendedNames = new Set(RECOMMENDED_OLLAMA_MODELS.map((m) => m.name));
+  const allOllamaModels: OllamaModelInfo[] = [
+    ...RECOMMENDED_OLLAMA_MODELS,
+    ...installedModels
+      .filter((name) => !recommendedNames.has(name))
+      .map((name) => ({ name, sizeGb: 0, description: "מותקן לוקלית" })),
+  ];
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -156,16 +172,21 @@ function AIForm({ settings }: { settings: AppSettings }) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {RECOMMENDED_OLLAMA_MODELS.map((m) => (
+                  {allOllamaModels.map((m) => (
                     <SelectItem key={m.name} value={m.name}>
                       <div className="flex items-center gap-2">
                         <span>{m.name}</span>
                         <span className="text-xs text-muted-foreground">
-                          {m.sizeGb} GB
+                          {m.sizeGb > 0 ? `${m.sizeGb} GB` : "לוקלי"}
                         </span>
                         {m.recommended && (
                           <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">
                             מומלץ
+                          </span>
+                        )}
+                        {installedModels.includes(m.name) && !m.recommended && (
+                          <span className="rounded-full bg-green-500/10 px-1.5 py-0.5 text-[10px] text-green-700 dark:text-green-400">
+                            מותקן
                           </span>
                         )}
                       </div>
@@ -174,10 +195,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
                 </SelectContent>
               </Select>
               <p className="text-xs text-muted-foreground">
-                {
-                  RECOMMENDED_OLLAMA_MODELS.find((m) => m.name === ollamaModel)
-                    ?.description
-                }
+                {allOllamaModels.find((m) => m.name === ollamaModel)?.description}
               </p>
             </div>
             <OllamaModelStatus ollamaUrl={ollamaUrl} model={ollamaModel} />

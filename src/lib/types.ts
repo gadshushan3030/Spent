@@ -333,6 +333,16 @@ export const RECOMMENDED_OLLAMA_MODELS: OllamaModelInfo[] = [
     recommended: true,
   },
   {
+    name: "gemma4:latest",
+    sizeGb: 9.6,
+    description: "Google Gemma 4 — strong reasoning, great for Hebrew.",
+  },
+  {
+    name: "gemma3:4b",
+    sizeGb: 3.3,
+    description: "Smaller Gemma 3 — lighter and faster.",
+  },
+  {
     name: "llama3.2:1b",
     sizeGb: 1.3,
     description: "Smallest and fastest. Slightly less accurate.",
