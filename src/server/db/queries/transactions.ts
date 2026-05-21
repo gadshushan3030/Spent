@@ -679,9 +679,12 @@ export function getTransactionsSummary(
 
   const expenseAgg = db
     .prepare(
-      `SELECT COALESCE(SUM(ABS(charged_amount)), 0) as total, COUNT(*) as count
-       FROM transactions
-       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount < 0`
+      `SELECT COALESCE(SUM(ABS(t.charged_amount)), 0) as total, COUNT(*) as count
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
+         AND t.status = 'completed' AND t.charged_amount < 0
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { total: number; count: number };
 
@@ -702,12 +705,15 @@ export function getTransactionsSummary(
 
   const topMerchantsRows = db
     .prepare(
-      `SELECT description,
-              SUM(ABS(charged_amount)) as total,
+      `SELECT t.description,
+              SUM(ABS(t.charged_amount)) as total,
               COUNT(*) as count
-       FROM transactions
-       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount < 0
-       GROUP BY description
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
+         AND t.status = 'completed' AND t.charged_amount < 0
+         ${SQL_EXCLUDE_TRACKING}
+       GROUP BY t.description
        ORDER BY total DESC
        LIMIT 5`
     )
