@@ -23,7 +23,7 @@ export function getCashFlow(
     .prepare(
       `SELECT COALESCE(SUM(charged_amount), 0) as total
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ?
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ?
          AND status = 'completed' AND kind = 'income'`
     )
     .get(workspaceId, from, to) as { total: number };
@@ -32,7 +32,7 @@ export function getCashFlow(
       `SELECT COALESCE(SUM(ABS(t.charged_amount)), 0) as total
        FROM transactions t
        LEFT JOIN categories c ON c.id = t.category_id
-       WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
          ${SQL_EXCLUDE_TRACKING}`
     )
@@ -68,7 +68,7 @@ export function getHistoricalTrend(
   const stmt = db.prepare(
     `SELECT COALESCE(SUM(ABS(charged_amount)), 0) as total
      FROM transactions
-     WHERE workspace_id = ? AND date >= ? AND date <= ?
+     WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ?
        AND status = 'completed' AND kind = 'expense'`
   );
 
@@ -236,7 +236,7 @@ export function getCategorySnapshot(
     .prepare(
       `SELECT category_id as categoryId, SUM(ABS(charged_amount)) as amount
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ?
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ?
          AND status = 'completed' AND kind = 'expense'
          AND category_id IS NOT NULL
        GROUP BY category_id`

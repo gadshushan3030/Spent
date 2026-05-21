@@ -172,11 +172,11 @@ export function queryTransactions(
   const values: (string | number)[] = [workspaceId];
 
   if (params.from) {
-    conditions.push("t.date >= ?");
+    conditions.push("DATE(t.date) >= ?");
     values.push(params.from);
   }
   if (params.to) {
-    conditions.push("t.date <= ?");
+    conditions.push("DATE(t.date) <= ?");
     values.push(params.to);
   }
   if (params.search) {
@@ -334,7 +334,7 @@ export function getTopMerchants(
               SUM(ABS(charged_amount)) as amount,
               COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND kind = 'expense'
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND kind = 'expense'
        GROUP BY description
        ORDER BY amount DESC
        LIMIT ?`
@@ -357,7 +357,7 @@ export function getCategoryBreakdown(
          COUNT(*) as count
        FROM transactions t
        LEFT JOIN categories c ON t.category_id = c.id
-       WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ? AND t.status = 'completed' AND t.kind = 'expense'
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ? AND t.status = 'completed' AND t.kind = 'expense'
        GROUP BY t.category_id
        ORDER BY amount DESC`
     )
@@ -381,7 +381,7 @@ export function getCategorySpendInRange(
               SUM(ABS(charged_amount)) as amount,
               COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND kind = 'expense' AND category_id IS NOT NULL
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND kind = 'expense' AND category_id IS NOT NULL
        GROUP BY category_id`
     )
     .all(workspaceId, from, to) as CategorySpend[];
@@ -405,7 +405,7 @@ export function getTopMerchantPerCategory(
          SELECT category_id, description, SUM(ABS(charged_amount)) as amount,
                 ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY SUM(ABS(charged_amount)) DESC) as rn
          FROM transactions
-         WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND kind = 'expense' AND category_id IS NOT NULL
+         WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND kind = 'expense' AND category_id IS NOT NULL
          GROUP BY category_id, description
        )
        WHERE rn = 1`
@@ -466,7 +466,7 @@ export function getTopMerchantsForCategory(
               COUNT(*) as count
        FROM transactions
        WHERE workspace_id = ? AND category_id = ?
-         AND date >= ? AND date <= ?
+         AND DATE(date) >= ? AND DATE(date) <= ?
          AND status = 'completed'
          AND kind = 'expense'
        GROUP BY description
@@ -486,7 +486,7 @@ export function getPeriodTotal(
       `SELECT COALESCE(SUM(ABS(t.charged_amount)), 0) as total
        FROM transactions t
        LEFT JOIN categories c ON c.id = t.category_id
-       WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
          ${SQL_EXCLUDE_TRACKING}`
     )
@@ -504,7 +504,7 @@ export function getPeriodCount(
       `SELECT COUNT(*) as count
        FROM transactions t
        LEFT JOIN categories c ON c.id = t.category_id
-       WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
          ${SQL_EXCLUDE_TRACKING}`
     )
@@ -673,7 +673,7 @@ export function getTransactionsSummary(
     .prepare(
       `SELECT COALESCE(SUM(charged_amount), 0) as total, COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND charged_amount > 0`
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount > 0`
     )
     .get(workspaceId, from, to) as { total: number; count: number };
 
@@ -681,7 +681,7 @@ export function getTransactionsSummary(
     .prepare(
       `SELECT COALESCE(SUM(ABS(charged_amount)), 0) as total, COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND charged_amount < 0`
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount < 0`
     )
     .get(workspaceId, from, to) as { total: number; count: number };
 
@@ -692,7 +692,7 @@ export function getTransactionsSummary(
         `SELECT t.*, c.name as category_name, c.color as category_color
          FROM transactions t
          LEFT JOIN categories c ON t.category_id = c.id
-         WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ? AND t.status = 'completed' AND t.charged_amount ${cmp}
+         WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ? AND t.status = 'completed' AND t.charged_amount ${cmp}
          ORDER BY ABS(t.charged_amount) DESC, t.id DESC
          LIMIT 1`
       )
@@ -706,7 +706,7 @@ export function getTransactionsSummary(
               SUM(ABS(charged_amount)) as total,
               COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND charged_amount < 0
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount < 0
        GROUP BY description
        ORDER BY total DESC
        LIMIT 5`
@@ -717,7 +717,7 @@ export function getTransactionsSummary(
     .prepare(
       `SELECT COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ? AND status = 'completed' AND needs_review = 1`
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND needs_review = 1`
     )
     .get(workspaceId, from, to) as { count: number };
 
@@ -747,7 +747,7 @@ export function getNeedsReviewCountByCategory(
     .prepare(
       `SELECT category_id as categoryId, COUNT(*) as count
        FROM transactions
-       WHERE workspace_id = ? AND date >= ? AND date <= ?
+       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ?
          AND status = 'completed'
          AND kind = 'expense'
          AND needs_review = 1
