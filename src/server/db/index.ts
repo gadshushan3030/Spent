@@ -4,6 +4,7 @@ import Database from "better-sqlite3";
 import path from "path";
 import fs from "fs";
 import { runMigrations } from "./migrate";
+import { fixupDedupHashes } from "./fixups";
 
 const DB_DIR = path.join(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "spent.db");
@@ -19,6 +20,7 @@ function createDatabase(): Database.Database {
   db.pragma("busy_timeout = 5000");
 
   runMigrations(db);
+  fixupDedupHashes(db);
 
   return db;
 }
