@@ -6,7 +6,9 @@ import { detectKind } from "../../lib/transfers";
 
 // Exclude tracking-mode categories (investments, transfers, etc.) from
 // lifestyle spend totals so stock purchases don't inflate the budget figures.
-export const SQL_EXCLUDE_TRACKING = "${SQL_EXCLUDE_TRACKING}";
+export const SQL_EXCLUDE_TRACKING =
+  "AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')";
+
 import type {
   TransactionWithCategory,
   MonthlySummary,

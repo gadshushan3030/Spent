@@ -95,6 +95,6 @@ export function fixupDedupHashes(db: Database.Database): void {
 
 function markDone(db: Database.Database): void {
   db.prepare(
-    "INSERT OR REPLACE INTO settings (workspace_id, key, value) VALUES (1, ?, '1')"
+    "INSERT OR REPLACE INTO settings (key, value) VALUES (?, '1')"
   ).run(FIXUP_FLAG);
 }
