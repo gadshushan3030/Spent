@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  mergeOllamaModels,
   RECOMMENDED_OLLAMA_MODELS,
+  type MergedOllamaModel,
   type OllamaModelInfo,
 } from "@/lib/types";
 import {
@@ -376,18 +378,7 @@ function OllamaConfig({
   onPull: () => void;
   onCancel: () => void;
 }) {
-  // Merge recommended list with any extra installed models not in it
-  const recommendedNames = new Set(RECOMMENDED_OLLAMA_MODELS.map((m) => m.name));
-  const extraInstalled: OllamaModelInfo[] = installedModels
-    .filter((name) => !recommendedNames.has(name))
-    .map((name) => ({ name, sizeGb: 0, description: "Installed locally." }));
-  const allModels: (OllamaModelInfo & { isInstalled?: boolean })[] = [
-    ...RECOMMENDED_OLLAMA_MODELS.map((m) => ({
-      ...m,
-      isInstalled: installedModels.includes(m.name),
-    })),
-    ...extraInstalled.map((m) => ({ ...m, isInstalled: true })),
-  ];
+  const allModels: MergedOllamaModel[] = mergeOllamaModels(installedModels);
 
   return (
     <div className="space-y-3 rounded-xl border border-border bg-card/60 p-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Select,
@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { RECOMMENDED_OLLAMA_MODELS, type AppSettings, type OllamaModelInfo } from "@/lib/types";
+import { mergeOllamaModels, type AppSettings } from "@/lib/types";
 import { getSettings, saveAIConfig, listOllamaModels } from "@/lib/api";
 import { OllamaModelStatus } from "./ollama-model-status";
 import { SectionShell, SettingCard } from "./section-shell";
@@ -50,22 +50,13 @@ function AIForm({ settings }: { settings: AppSettings }) {
   const [apiKey, setApiKey] = useState("");
   const [ollamaUrl, setOllamaUrl] = useState(settings.ollamaUrl);
   const [ollamaModel, setOllamaModel] = useState(settings.ollamaModel);
-  const [installedModels, setInstalledModels] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (provider !== "ollama") return;
-    listOllamaModels(ollamaUrl).then(({ models, error }) => {
-      if (!error) setInstalledModels(models);
-    }).catch(() => {});
-  }, [provider, ollamaUrl]);
-
-  const recommendedNames = new Set(RECOMMENDED_OLLAMA_MODELS.map((m) => m.name));
-  const allOllamaModels: OllamaModelInfo[] = [
-    ...RECOMMENDED_OLLAMA_MODELS,
-    ...installedModels
-      .filter((name) => !recommendedNames.has(name))
-      .map((name) => ({ name, sizeGb: 0, description: "מותקן לוקלית" })),
-  ];
+  const { data: ollamaData } = useQuery({
+    queryKey: ["ollamaModels", ollamaUrl],
+    queryFn: () => listOllamaModels(ollamaUrl),
+    enabled: provider === "ollama",
+    staleTime: 30_000,
+  });
+  const allOllamaModels = mergeOllamaModels(ollamaData?.models ?? []);
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -184,7 +175,7 @@ function AIForm({ settings }: { settings: AppSettings }) {
                             מומלץ
                           </span>
                         )}
-                        {installedModels.includes(m.name) && !m.recommended && (
+                        {m.isInstalled && !m.recommended && (
                           <span className="rounded-full bg-green-500/10 px-1.5 py-0.5 text-[10px] text-green-700 dark:text-green-400">
                             מותקן
                           </span>

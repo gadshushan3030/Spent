@@ -3,6 +3,8 @@ import "server-only";
 import type Database from "better-sqlite3";
 import { computeDedupHash } from "../lib/dedup";
 
+const FIXUP_FLAG = "dedup_hash_v2_done";
+
 interface TxnRow {
   id: number;
   workspace_id: number;
@@ -24,9 +26,15 @@ interface TxnRow {
  * hashes from a previous algorithm version are silently duplicated on every
  * sync — this fixup collapses them.
  *
- * Safe to call on every startup: it is a no-op when all hashes are current.
+ * A settings flag is written after the first successful run so that
+ * subsequent startups skip the full table scan entirely.
  */
 export function fixupDedupHashes(db: Database.Database): void {
+  const already = db
+    .prepare("SELECT value FROM settings WHERE key = ?")
+    .get(FIXUP_FLAG) as { value: string } | undefined;
+  if (already) return;
+
   const rows = db
     .prepare(
       `SELECT id, workspace_id, account_number, date, original_amount,
@@ -37,9 +45,11 @@ export function fixupDedupHashes(db: Database.Database): void {
     )
     .all() as TxnRow[];
 
-  if (rows.length === 0) return;
+  if (rows.length === 0) {
+    markDone(db);
+    return;
+  }
 
-  // Compute correct hash for every row
   const withNewHash = rows.map((r) => ({
     ...r,
     newHash: computeDedupHash({
@@ -54,20 +64,13 @@ export function fixupDedupHashes(db: Database.Database): void {
     }),
   }));
 
-  const hasStale = withNewHash.some((r) => r.newHash !== r.dedup_hash);
-  if (!hasStale) return;
-
-  // Determine which rows to keep and which to delete.
-  // Key = (workspace_id, newHash, dedup_sequence). Keep the lowest id.
   const seen = new Map<string, number>();
   const toDelete: number[] = [];
   const toUpdate: { id: number; hash: string }[] = [];
 
   for (const r of withNewHash) {
     const key = `${r.workspace_id}|${r.newHash}|${r.dedup_sequence}`;
-    const existing = seen.get(key);
-    if (existing !== undefined) {
-      // Duplicate — remove the newer one
+    if (seen.has(key)) {
       toDelete.push(r.id);
     } else {
       seen.set(key, r.id);
@@ -80,16 +83,18 @@ export function fixupDedupHashes(db: Database.Database): void {
   db.transaction(() => {
     if (toDelete.length > 0) {
       const placeholders = toDelete.map(() => "?").join(",");
-      db.prepare(
-        `DELETE FROM transactions WHERE id IN (${placeholders})`
-      ).run(...toDelete);
+      db.prepare(`DELETE FROM transactions WHERE id IN (${placeholders})`).run(...toDelete);
     }
-
-    const updateStmt = db.prepare(
-      "UPDATE transactions SET dedup_hash = ? WHERE id = ?"
-    );
+    const updateStmt = db.prepare("UPDATE transactions SET dedup_hash = ? WHERE id = ?");
     for (const { id, hash } of toUpdate) {
       updateStmt.run(hash, id);
     }
+    markDone(db);
   })();
+}
+
+function markDone(db: Database.Database): void {
+  db.prepare(
+    "INSERT OR REPLACE INTO settings (workspace_id, key, value) VALUES (1, ?, '1')"
+  ).run(FIXUP_FLAG);
 }

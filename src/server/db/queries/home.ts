@@ -2,6 +2,7 @@ import "server-only";
 
 import { getDb } from "../index";
 import { toLocalISODate } from "../../lib/date-utils";
+import { SQL_EXCLUDE_TRACKING } from "./transactions";
 import type {
   HomeBankHealthItem,
   HomeCashFlow,
@@ -33,7 +34,7 @@ export function getCashFlow(
        LEFT JOIN categories c ON c.id = t.category_id
        WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
-         AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')`
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { total: number };
   return {

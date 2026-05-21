@@ -359,6 +359,28 @@ export const RECOMMENDED_OLLAMA_MODELS: OllamaModelInfo[] = [
   },
 ];
 
+const RECOMMENDED_NAMES = new Set(RECOMMENDED_OLLAMA_MODELS.map((m) => m.name));
+
+export interface MergedOllamaModel extends OllamaModelInfo {
+  isInstalled: boolean;
+}
+
+/**
+ * Merge the recommended model list with any locally installed models that
+ * are not already in the recommended list. Callers pass the list they got
+ * from listOllamaModels(); the function adds an isInstalled flag to every
+ * recommended model so the UI can show install status without a second lookup.
+ */
+export function mergeOllamaModels(installedNames: string[]): MergedOllamaModel[] {
+  const installedSet = new Set(installedNames);
+  return [
+    ...RECOMMENDED_OLLAMA_MODELS.map((m) => ({ ...m, isInstalled: installedSet.has(m.name) })),
+    ...installedNames
+      .filter((name) => !RECOMMENDED_NAMES.has(name))
+      .map((name) => ({ name, sizeGb: 0, description: "מותקן לוקלית", isInstalled: true })),
+  ];
+}
+
 export const BANK_PROVIDERS: BankProviderInfo[] = [
   {
     id: "isracard",

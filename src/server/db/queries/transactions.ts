@@ -3,6 +3,10 @@ import "server-only";
 import { getDb } from "../index";
 import { computeDedupHash } from "../../lib/dedup";
 import { detectKind } from "../../lib/transfers";
+
+// Exclude tracking-mode categories (investments, transfers, etc.) from
+// lifestyle spend totals so stock purchases don't inflate the budget figures.
+export const SQL_EXCLUDE_TRACKING = "${SQL_EXCLUDE_TRACKING}";
 import type {
   TransactionWithCategory,
   MonthlySummary,
@@ -482,7 +486,7 @@ export function getPeriodTotal(
        LEFT JOIN categories c ON c.id = t.category_id
        WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
-         AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')`
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { total: number };
   return row.total;
@@ -500,7 +504,7 @@ export function getPeriodCount(
        LEFT JOIN categories c ON c.id = t.category_id
        WHERE t.workspace_id = ? AND t.date >= ? AND t.date <= ?
          AND t.status = 'completed' AND t.kind = 'expense'
-         AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')`
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { count: number };
   return row.count;
