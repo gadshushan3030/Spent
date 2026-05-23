@@ -112,8 +112,23 @@ export function CategoryGrid({
         (c) => c.isParent || c.parentId == null || !parentIds.has(c.parentId)
       );
     }
-    // expanded: hide synthetic parent rollup rows; show all leaves
-    return activeCategories.filter((c) => !c.isParent);
+    // expanded: show all leaves. A parent with transactions assigned directly
+    // to it (not to a child) is surfaced as a standalone card showing only its
+    // own direct spend, so that spend isn't hidden with the rollup row.
+    const rows: CategoryWithData[] = [];
+    for (const c of activeCategories) {
+      if (!c.isParent) {
+        rows.push(c);
+      } else if ((c.ownSpent ?? 0) > 0) {
+        rows.push({
+          ...c,
+          isParent: false,
+          spent: c.ownSpent ?? 0,
+          transactionCount: c.ownTransactionCount ?? 0,
+        });
+      }
+    }
+    return rows;
   }, [activeCategories, viewMode]);
 
   const counts = useMemo(() => {

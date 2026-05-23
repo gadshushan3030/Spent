@@ -252,6 +252,8 @@ export async function GET(request: Request) {
       isParent: true,
       budgetSource,
       childCount: kids.length,
+      ownSpent: ownSpend?.amount ?? 0,
+      ownTransactionCount: ownSpend?.count ?? 0,
       categoryName: parent.name,
       categoryColor: parent.color,
       categoryIcon: parent.icon,

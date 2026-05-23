@@ -102,6 +102,11 @@ export interface CategoryWithData {
   isParent: boolean;
   budgetSource: BudgetSource;
   childCount?: number;
+  // Parent rows only: spend/count from transactions assigned directly to the
+  // parent category itself (not its children). Lets the expanded view surface
+  // a standalone card for the parent's own spend.
+  ownSpent?: number;
+  ownTransactionCount?: number;
   categoryName: string;
   categoryColor: string;
   categoryIcon: string | null;
