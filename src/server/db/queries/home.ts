@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getDb } from "../index";
-import { toLocalISODate } from "../../lib/date-utils";
+import { hebrewMonth, toLocalISODate } from "../../lib/date-utils";
 import { SQL_EXCLUDE_TRACKING } from "./transactions";
 import type {
   HomeBankHealthItem,
@@ -52,37 +52,40 @@ export function getHistoricalTrend(
   const now = new Date();
   const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 
-  const months: { key: string; label: string; from: string; to: string }[] = [];
+  const months: { key: string; label: string }[] = [];
   for (let i = monthsBack - 1; i >= 0; i--) {
     const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
     const key = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, "0")}`;
-    months.push({
-      key,
-      label: start.toLocaleDateString("en-US", { month: "short" }),
-      from: toLocalISODate(start),
-      to: toLocalISODate(end),
-    });
+    months.push({ key, label: hebrewMonth(start, "short") });
   }
 
-  const stmt = db.prepare(
-    `SELECT COALESCE(SUM(ABS(t.charged_amount)), 0) as total
-     FROM transactions t
-     LEFT JOIN categories c ON c.id = t.category_id
-     WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
-       AND t.status = 'completed' AND t.kind = 'expense'
-       ${SQL_EXCLUDE_TRACKING}`
-  );
+  const rangeStart = new Date(now.getFullYear(), now.getMonth() - monthsBack + 1, 1);
+  const rangeEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-  return months.map((m) => {
-    const row = stmt.get(workspaceId, m.from, m.to) as { total: number };
-    return {
-      month: m.key,
-      label: m.label,
-      total: row.total,
-      isCurrent: m.key === currentMonthKey,
-    };
-  });
+  const rows = db
+    .prepare(
+      `SELECT strftime('%Y-%m', DATE(t.date)) as month,
+              COALESCE(SUM(ABS(t.charged_amount)), 0) as total
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
+         AND t.status = 'completed' AND t.kind = 'expense'
+         ${SQL_EXCLUDE_TRACKING}
+       GROUP BY month`
+    )
+    .all(workspaceId, toLocalISODate(rangeStart), toLocalISODate(rangeEnd)) as {
+    month: string;
+    total: number;
+  }[];
+
+  const totalByMonth = new Map(rows.map((r) => [r.month, r.total]));
+
+  return months.map((m) => ({
+    month: m.key,
+    label: m.label,
+    total: totalByMonth.get(m.key) ?? 0,
+    isCurrent: m.key === currentMonthKey,
+  }));
 }
 
 export function getRecentTransactionsForHome(

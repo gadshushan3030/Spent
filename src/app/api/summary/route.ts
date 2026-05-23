@@ -46,7 +46,7 @@ export async function GET(request: Request) {
   const months = Number(searchParams.get("months") ?? "12");
 
   const fromDate = parseISODate(from);
-  const monthLabel = fromDate.toLocaleDateString("en-US", { month: "long" });
+  const monthLabel = fromDate.toLocaleDateString("he-IL", { month: "long" });
   const year = fromDate.getFullYear();
   const month = fromDate.getMonth();
   const totalDays = daysInMonth(year, month);

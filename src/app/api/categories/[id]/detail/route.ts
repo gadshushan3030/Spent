@@ -233,9 +233,7 @@ export async function GET(
     avgPerTransaction,
     vsLastMonth,
     prevSpent,
-    prevPeriodLabel: prevMonthStart.toLocaleDateString("en-US", {
-      month: "long",
-    }),
+    prevPeriodLabel: prevMonthStart.toLocaleDateString("he-IL", { month: "long" }),
     dailySpend,
     topMerchants,
     transactions,

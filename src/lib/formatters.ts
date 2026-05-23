@@ -22,7 +22,7 @@ export function formatDate(isoDate: string): string {
 
 export function formatMonth(isoDate: string): string {
   const d = new Date(isoDate);
-  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  return d.toLocaleDateString("he-IL", { month: "short", year: "numeric" });
 }
 
 function toLocalDateString(d: Date): string {
@@ -45,7 +45,7 @@ export function getMonthRange(date: Date = new Date()): {
 }
 
 export function formatMonthLabel(date: Date): string {
-  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  return date.toLocaleDateString("he-IL", { month: "long", year: "numeric" });
 }
 
 export function addMonths(date: Date, months: number): Date {

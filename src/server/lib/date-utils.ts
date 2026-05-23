@@ -11,3 +11,7 @@ export function toLocalISODate(d: Date): string {
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
 }
+
+export function hebrewMonth(d: Date, format: "long" | "short" = "long"): string {
+  return d.toLocaleDateString("he-IL", { month: format });
+}
