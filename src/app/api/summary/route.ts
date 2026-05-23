@@ -191,27 +191,30 @@ export async function GET(request: Request) {
       .map((k) => leafById.get(k.id))
       .filter((r): r is CategoryWithData => !!r);
 
-    const spent = kidRows.reduce((s, r) => s + r.spent, 0);
-    const transactionCount = kidRows.reduce(
-      (s, r) => s + r.transactionCount,
-      0
-    );
-    const needsReviewCount = kidRows.reduce(
-      (s, r) => s + r.needsReviewCount,
-      0
-    );
-    const prevTotal = kids.reduce(
-      (s, k) => s + (prevMap.get(k.id) ?? 0),
-      0
-    );
+    // Transactions can be assigned directly to a parent category, not just
+    // its children. Fold the parent's own spend into the rollup so it isn't
+    // silently dropped.
+    const ownSpend = currentMap.get(parent.id);
+    const spent =
+      kidRows.reduce((s, r) => s + r.spent, 0) + (ownSpend?.amount ?? 0);
+    const transactionCount =
+      kidRows.reduce((s, r) => s + r.transactionCount, 0) +
+      (ownSpend?.count ?? 0);
+    const needsReviewCount =
+      kidRows.reduce((s, r) => s + r.needsReviewCount, 0) +
+      (needsReviewMap.get(parent.id) ?? 0);
+    const prevTotal =
+      kids.reduce((s, k) => s + (prevMap.get(k.id) ?? 0), 0) +
+      (prevMap.get(parent.id) ?? 0);
     const vsLastMonth =
       prevTotal > 0 ? ((spent - prevTotal) / prevTotal) * 100 : null;
 
-    // topMerchant: whichever child's top merchant has the largest spend
+    // topMerchant: whichever child's (or the parent's own) top merchant has
+    // the largest spend.
     let topMerchant: string | null = null;
     let topMerchantAmount = -Infinity;
-    for (const k of kids) {
-      const m = topMerchantMap.get(k.id);
+    for (const id of [parent.id, ...kids.map((k) => k.id)]) {
+      const m = topMerchantMap.get(id);
       if (m && m.amount > topMerchantAmount) {
         topMerchantAmount = m.amount;
         topMerchant = m.merchant;
