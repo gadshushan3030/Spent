@@ -119,30 +119,25 @@ export function getRecentTransactionsForHome(
 export function getNeedsAttentionCounts(
   workspaceId: number
 ): HomeNeedsAttention {
-  const db = getDb();
-  const uncategorized = db
+  const row = getDb()
     .prepare(
-      `SELECT COUNT(*) as count FROM transactions
-       WHERE workspace_id = ? AND category_id IS NULL AND kind = 'expense' AND status = 'completed'`
+      `SELECT
+         SUM(CASE WHEN category_id IS NULL AND kind = 'expense' THEN 1 ELSE 0 END) AS uncategorized,
+         SUM(CASE WHEN ai_confidence IS NOT NULL AND ai_confidence < 0.5
+                       AND category_source = 'ai' THEN 1 ELSE 0 END) AS lowConfidence,
+         SUM(CASE WHEN needs_review = 1 THEN 1 ELSE 0 END) AS flagged
+       FROM transactions
+       WHERE workspace_id = ? AND status = 'completed'`
     )
-    .get(workspaceId) as { count: number };
-  const lowConfidence = db
-    .prepare(
-      `SELECT COUNT(*) as count FROM transactions
-       WHERE workspace_id = ? AND ai_confidence IS NOT NULL AND ai_confidence < 0.5
-         AND category_source = 'ai' AND status = 'completed'`
-    )
-    .get(workspaceId) as { count: number };
-  const flagged = db
-    .prepare(
-      `SELECT COUNT(*) as count FROM transactions
-       WHERE workspace_id = ? AND needs_review = 1 AND status = 'completed'`
-    )
-    .get(workspaceId) as { count: number };
+    .get(workspaceId) as {
+    uncategorized: number | null;
+    lowConfidence: number | null;
+    flagged: number | null;
+  };
   return {
-    uncategorized: uncategorized.count,
-    lowConfidence: lowConfidence.count,
-    flagged: flagged.count,
+    uncategorized: row.uncategorized ?? 0,
+    lowConfidence: row.lowConfidence ?? 0,
+    flagged: row.flagged ?? 0,
   };
 }
 
