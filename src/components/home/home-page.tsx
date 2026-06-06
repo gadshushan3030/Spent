@@ -53,7 +53,7 @@ export function HomePage() {
   return (
     <>
       <PageHeader
-        title="בית"
+        title="סקירה"
         actions={
           <>
             <SyncStatusPill
