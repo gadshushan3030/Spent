@@ -671,9 +671,12 @@ export function getTransactionsSummary(
 
   const incomeAgg = db
     .prepare(
-      `SELECT COALESCE(SUM(charged_amount), 0) as total, COUNT(*) as count
-       FROM transactions
-       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ? AND status = 'completed' AND charged_amount > 0`
+      `SELECT COALESCE(SUM(t.charged_amount), 0) as total, COUNT(*) as count
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
+         AND t.status = 'completed' AND t.charged_amount > 0
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { total: number; count: number };
 

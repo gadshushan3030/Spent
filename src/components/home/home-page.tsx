@@ -160,7 +160,7 @@ const SKELETON_LABELS: Record<HomeSection, string> = {
   thisMonth: "החודש",
   cashFlow: "תזרים מזומנים",
   categorySnapshot: "קטגוריות מובילות",
-  historicalTrend: "8 חודשים אחרונים",
+  historicalTrend: "הכנסות מול הוצאות",
   recentTransactions: "פעילות אחרונה",
   topMerchants: "ספקים מובילים",
   needsAttention: "דורש תשומת לב",

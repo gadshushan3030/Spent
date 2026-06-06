@@ -21,10 +21,12 @@ export function getCashFlow(
   const db = getDb();
   const income = db
     .prepare(
-      `SELECT COALESCE(SUM(charged_amount), 0) as total
-       FROM transactions
-       WHERE workspace_id = ? AND DATE(date) >= ? AND DATE(date) <= ?
-         AND status = 'completed' AND kind = 'income'`
+      `SELECT COALESCE(SUM(t.charged_amount), 0) as total
+       FROM transactions t
+       LEFT JOIN categories c ON c.id = t.category_id
+       WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
+         AND t.status = 'completed' AND t.kind = 'income'
+         ${SQL_EXCLUDE_TRACKING}`
     )
     .get(workspaceId, from, to) as { total: number };
   const expenses = db
@@ -65,27 +67,39 @@ export function getHistoricalTrend(
   const rows = db
     .prepare(
       `SELECT strftime('%Y-%m', DATE(t.date)) as month,
-              COALESCE(SUM(ABS(t.charged_amount)), 0) as total
+              COALESCE(SUM(CASE WHEN t.kind = 'income'
+                                 AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')
+                                THEN t.charged_amount ELSE 0 END), 0) as income,
+              COALESCE(SUM(CASE WHEN t.kind = 'expense'
+                                 AND (c.budget_mode IS NULL OR c.budget_mode != 'tracking')
+                                THEN ABS(t.charged_amount) ELSE 0 END), 0) as expenses
        FROM transactions t
        LEFT JOIN categories c ON c.id = t.category_id
        WHERE t.workspace_id = ? AND DATE(t.date) >= ? AND DATE(t.date) <= ?
-         AND t.status = 'completed' AND t.kind = 'expense'
-         ${SQL_EXCLUDE_TRACKING}
+         AND t.status = 'completed'
        GROUP BY month`
     )
     .all(workspaceId, toLocalISODate(rangeStart), toLocalISODate(rangeEnd)) as {
     month: string;
-    total: number;
+    income: number;
+    expenses: number;
   }[];
 
-  const totalByMonth = new Map(rows.map((r) => [r.month, r.total]));
+  const byMonth = new Map(rows.map((r) => [r.month, r]));
 
-  return months.map((m) => ({
-    month: m.key,
-    label: m.label,
-    total: totalByMonth.get(m.key) ?? 0,
-    isCurrent: m.key === currentMonthKey,
-  }));
+  return months.map((m) => {
+    const row = byMonth.get(m.key);
+    const income = row?.income ?? 0;
+    const expenses = row?.expenses ?? 0;
+    return {
+      month: m.key,
+      label: m.label,
+      income,
+      expenses,
+      net: income - expenses,
+      isCurrent: m.key === currentMonthKey,
+    };
+  });
 }
 
 export function getRecentTransactionsForHome(

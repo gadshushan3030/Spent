@@ -188,7 +188,9 @@ export interface HomeCategorySnapshotItem {
 export interface HomeHistoricalTrendPoint {
   month: string;
   label: string;
-  total: number;
+  income: number;
+  expenses: number;
+  net: number;
   isCurrent: boolean;
 }
 
