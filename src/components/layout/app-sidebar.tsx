@@ -23,7 +23,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { WorkspaceSwitcher } from "./workspace-switcher";
-import { SidebarMonthGlance } from "./sidebar-month-glance";
+import { SidebarCashflow } from "./sidebar-cashflow";
 import { getHome } from "@/lib/api";
 
 type NavItem = {
@@ -96,6 +96,12 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarCashflow />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
           <SidebarGroupLabel>ניווט</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -127,12 +133,6 @@ export function AppSidebar() {
                 );
               })}
             </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup className="mt-auto">
-          <SidebarGroupContent>
-            <SidebarMonthGlance />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
