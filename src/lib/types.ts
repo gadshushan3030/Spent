@@ -176,6 +176,24 @@ export interface HomeCashFlow {
   net: number;
 }
 
+export interface SavingsProjectionPoint {
+  month: string;
+  label: string;
+  cumulative: number;
+}
+
+export interface SavingsProjection {
+  monthsCounted: number;
+  avgIncome: number;
+  avgExpenses: number;
+  avgNet: number;
+  savingsRate: number;
+  projectedAnnual: number;
+  projectedYearEnd: number;
+  currentMonthKey: string;
+  projection: SavingsProjectionPoint[];
+}
+
 export interface HomeCategorySnapshotItem {
   categoryId: number;
   name: string;

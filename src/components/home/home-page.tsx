@@ -16,6 +16,7 @@ import { RecentTransactionsCard } from "./recent-transactions-card";
 import { TopMerchantsCard } from "./top-merchants-card";
 import { NeedsAttentionCard } from "./needs-attention-card";
 import { BankHealthCard } from "./bank-health-card";
+import { SavingsTrajectoryCard } from "./savings-trajectory-card";
 import { SyncStatusPill } from "./sync-status-pill";
 import { SyncFailureBanner } from "./sync-failure-banner";
 import { CardError, CardSkeleton } from "./card-shell";
@@ -76,6 +77,9 @@ export function HomePage() {
         />
         <AINotConnectedBanner className="mb-4 md:mb-5 lg:mb-6" />
         <div className="grid grid-cols-12 gap-4 md:gap-5 lg:gap-6">
+          <div className="col-span-12">
+            <SavingsTrajectoryCard />
+          </div>
           {renderSection("thisMonth", data, isLoading, isError, ROW_1)}
           {renderSection("cashFlow", data, isLoading, isError, ROW_1_SIDE)}
           {renderSection("categorySnapshot", data, isLoading, isError, ROW_2)}

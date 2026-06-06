@@ -10,6 +10,7 @@ import type {
   Integration,
   Workspace,
   HomePayload,
+  SavingsProjection,
 } from "./types";
 import { getActiveWorkspaceIdSync } from "./workspace-store";
 
@@ -220,6 +221,10 @@ export function getSummary(params: {
 
 export function getHome() {
   return fetchJSON<HomePayload>(`/api/home`);
+}
+
+export function getProjection() {
+  return fetchJSON<SavingsProjection>(`/api/projection`);
 }
 
 export function getCategories(kind?: CategoryKindFilter) {
