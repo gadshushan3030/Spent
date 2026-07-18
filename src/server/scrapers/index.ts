@@ -108,6 +108,26 @@ function classifyError(error: unknown): {
   return { retryable: false, friendly: null };
 }
 
+/**
+ * Cloudflare serves an interactive "Just a moment..." challenge page instead
+ * of the bank's JSON once it flags the client. Solvable only in a visible
+ * browser, so we detect it and retry headful.
+ */
+function isCloudflareChallenge(msg: string | undefined): boolean {
+  return (
+    !!msg && /challenges\.cloudflare\.com|Just a moment|_cf_chl|cf_chl_/i.test(msg)
+  );
+}
+
+/** A visible browser needs a display: always there on macOS/Windows, X11 on Linux. */
+function canShowBrowser(): boolean {
+  return (
+    process.platform === "darwin" ||
+    process.platform === "win32" ||
+    !!process.env.DISPLAY
+  );
+}
+
 const FRIENDLY_ERRORS: Record<string, string> = {
   INVALID_PASSWORD:
     "The credentials were rejected by the bank. Double-check ID, card last 6 digits, and password.",
@@ -160,7 +180,20 @@ async function runScrape(
     // Only enable when the user is also showing the browser (= they're debugging).
     verbose: showBrowser,
     timeout: 60000,
+    // The library's `timeout` only bounds browser launch; page navigations use
+    // puppeteer's 30s default unless defaultTimeout is set.
+    defaultTimeout: 60000,
+    navigationRetryCount: 1,
     args: chromiumArgs,
+    preparePage: async (page) => {
+      // Headless Chrome advertises "HeadlessChrome" in its user agent, which
+      // WAFs (e.g. Cloudflare in front of Amex IL) block outright with a 403.
+      const ua = await page.browser().userAgent();
+      await page.setUserAgent(ua.replace("HeadlessChrome", "Chrome"));
+      await page.setExtraHTTPHeaders({
+        "Accept-Language": "he-IL,he;q=0.9,en;q=0.8",
+      });
+    },
   });
 
   // credentials shape varies by provider; the library accepts different types per bank
@@ -244,7 +277,19 @@ export async function scrapeBank(
       console.log(
         `[scraper] starting scrape for ${provider} from ${startDate.toISOString()} (attempt ${attempt}/${MAX_ATTEMPTS}, showBrowser=${showBrowser})`
       );
-      return await runScrape(provider, credentials, startDate, showBrowser);
+      let result = await runScrape(provider, credentials, startDate, showBrowser);
+      if (
+        !result.success &&
+        !showBrowser &&
+        canShowBrowser() &&
+        isCloudflareChallenge(result.errorMessage)
+      ) {
+        console.log(
+          "[scraper] Cloudflare challenge detected, retrying with a visible browser"
+        );
+        result = await runScrape(provider, credentials, startDate, true);
+      }
+      return result;
     } catch (error) {
       lastError = error;
       console.error(
