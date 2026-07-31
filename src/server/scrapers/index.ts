@@ -190,7 +190,7 @@ async function runScrape(
     navigationRetryCount: 1,
     // On failure the library snapshots the page - the only way to see what a
     // bank actually showed (new modal, OTP screen, maintenance page).
-    storeFailureScreenShotPath: `${process.cwd()}/data/last-scrape-failure-${baseProviderId(provider)}.png`,
+    storeFailureScreenShotPath: `${process.cwd()}/data/last-scrape-failure-${provider}.png`,
     args: chromiumArgs,
     preparePage: async (page) => {
       // Headless Chrome advertises "HeadlessChrome" in its user agent, which
