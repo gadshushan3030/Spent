@@ -109,13 +109,17 @@ function classifyError(error: unknown): {
 }
 
 /**
- * Cloudflare serves an interactive "Just a moment..." challenge page instead
- * of the bank's JSON once it flags the client. Solvable only in a visible
- * browser, so we detect it and retry headful.
+ * Cloudflare serves an interactive challenge page (or an empty response)
+ * instead of the bank's JSON once it flags the client. Any non-JSON login
+ * response is WAF interference of the same class - solvable only in a
+ * visible browser, so we detect it and retry headful.
  */
 function isCloudflareChallenge(msg: string | undefined): boolean {
   return (
-    !!msg && /challenges\.cloudflare\.com|Just a moment|_cf_chl|cf_chl_/i.test(msg)
+    !!msg &&
+    /challenges\.cloudflare\.com|Just a moment|_cf_chl|cf_chl_|fetchPostWithinPage parse error/i.test(
+      msg
+    )
   );
 }
 
@@ -184,6 +188,9 @@ async function runScrape(
     // puppeteer's 30s default unless defaultTimeout is set.
     defaultTimeout: 60000,
     navigationRetryCount: 1,
+    // On failure the library snapshots the page - the only way to see what a
+    // bank actually showed (new modal, OTP screen, maintenance page).
+    storeFailureScreenShotPath: `${process.cwd()}/data/last-scrape-failure-${provider}.png`,
     args: chromiumArgs,
     preparePage: async (page) => {
       // Headless Chrome advertises "HeadlessChrome" in its user agent, which
