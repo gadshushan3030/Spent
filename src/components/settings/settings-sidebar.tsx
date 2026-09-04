@@ -81,7 +81,7 @@ const GROUPS: { title: string; items: NavItem[] }[] = [
 export function SettingsSidebar() {
   const pathname = usePathname();
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-border/40 bg-card/30 md:flex md:flex-col">
+    <aside className="mb-6 ms-4 mt-4 hidden w-56 shrink-0 self-start rounded-3xl glass md:ms-6 md:flex md:flex-col lg:ms-8">
       <div className="px-5 pt-6 pb-3">
         <div className="font-serif text-xl leading-none tracking-tight">
           הגדרות

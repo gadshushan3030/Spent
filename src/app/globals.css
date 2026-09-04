@@ -57,7 +57,7 @@
   /* Buttercream light theme - brighter warm cream that lifts white cards */
   --background: #FCF7ED;
   --foreground: #2C2A27;
-  --card: oklch(1 0 0);
+  --card: rgba(255, 255, 255, 0.5);
   --card-foreground: #2C2A27;
   --popover: oklch(1 0 0);
   --popover-foreground: #2C2A27;
@@ -85,13 +85,24 @@
   --status-over: oklch(0.62 0.16 30);
   --status-plenty-left: oklch(0.72 0.08 220);
   --radius: 0.875rem;
-  --sidebar: oklch(0.95 0.025 85);
+  /* Liquid Glass surfaces */
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-strong: rgba(255, 255, 255, 0.68);
+  --glass-soft: rgba(255, 255, 255, 0.28);
+  --glass-edge: rgba(255, 255, 255, 0.72);
+  --glass-hi: rgba(255, 255, 255, 0.85);
+  --glass-shadow: rgba(44, 42, 39, 0.1);
+  --blob-1: rgba(143, 191, 154, 0.55);
+  --blob-2: rgba(224, 151, 122, 0.42);
+  --blob-3: rgba(147, 188, 217, 0.5);
+  --blob-4: rgba(217, 191, 133, 0.45);
+  --sidebar: rgba(255, 255, 255, 0.5);
   --sidebar-foreground: #2C2A27;
   --sidebar-primary: oklch(0.55 0.10 145);
   --sidebar-primary-foreground: oklch(0.98 0.012 90);
-  --sidebar-accent: oklch(0.94 0.03 85);
+  --sidebar-accent: rgba(255, 255, 255, 0.68);
   --sidebar-accent-foreground: #2C2A27;
-  --sidebar-border: #ECE3D2;
+  --sidebar-border: rgba(255, 255, 255, 0.72);
   --sidebar-ring: oklch(0.55 0.10 145);
 }
 
@@ -99,7 +110,7 @@
   /* Warm dark theme */
   --background: oklch(0.18 0.008 60);
   --foreground: oklch(0.94 0.018 85);
-  --card: oklch(0.22 0.010 60);
+  --card: rgba(255, 255, 255, 0.075);
   --card-foreground: oklch(0.94 0.018 85);
   --popover: oklch(0.22 0.010 60);
   --popover-foreground: oklch(0.94 0.018 85);
@@ -124,13 +135,23 @@
   --status-heads-up: oklch(0.76 0.14 85);
   --status-over: oklch(0.70 0.17 30);
   --status-plenty-left: oklch(0.74 0.10 220);
-  --sidebar: oklch(0.22 0.010 60);
+  --glass: rgba(255, 255, 255, 0.075);
+  --glass-strong: rgba(255, 255, 255, 0.13);
+  --glass-soft: rgba(255, 255, 255, 0.045);
+  --glass-edge: rgba(255, 255, 255, 0.16);
+  --glass-hi: rgba(255, 255, 255, 0.22);
+  --glass-shadow: rgba(0, 0, 0, 0.45);
+  --blob-1: rgba(110, 170, 125, 0.42);
+  --blob-2: rgba(214, 112, 79, 0.3);
+  --blob-3: rgba(100, 150, 190, 0.38);
+  --blob-4: rgba(200, 160, 80, 0.26);
+  --sidebar: rgba(255, 255, 255, 0.075);
   --sidebar-foreground: oklch(0.94 0.018 85);
   --sidebar-primary: oklch(0.72 0.08 145);
   --sidebar-primary-foreground: oklch(0.18 0.012 60);
-  --sidebar-accent: oklch(0.28 0.012 65);
+  --sidebar-accent: rgba(255, 255, 255, 0.13);
   --sidebar-accent-foreground: oklch(0.94 0.018 85);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-border: rgba(255, 255, 255, 0.16);
   --sidebar-ring: oklch(0.72 0.08 145);
 }
 
@@ -139,8 +160,24 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-feature-settings: "ss01", "cv11";
+    /* Color mesh the glass surfaces refract. Fixed so it stays put on scroll. */
+    background-color: var(--background);
+    background-image:
+      radial-gradient(640px 560px at 100% -10%, var(--blob-1), transparent 70%),
+      radial-gradient(520px 520px at 25% 20%, var(--blob-2), transparent 70%),
+      radial-gradient(700px 600px at -5% 110%, var(--blob-3), transparent 70%),
+      radial-gradient(460px 460px at 65% 95%, var(--blob-4), transparent 70%);
+    background-attachment: fixed;
+  }
+  /* Content column and sidebar shell sit on the mesh, not on a flat fill. */
+  [data-slot="sidebar-inset"],
+  [data-slot="sidebar-wrapper"] {
+    background: transparent;
+  }
+  [data-slot="sidebar-inner"] {
+    border-radius: 26px;
   }
   html {
     @apply font-sans;
@@ -150,6 +187,33 @@
     font-family: var(--font-serif), Georgia, serif;
     font-feature-settings: "ss01", "ss03";
   }
+}
+
+/* Liquid Glass: translucent fill, blur, light edge, top highlight. */
+@utility glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 32px -8px var(--glass-shadow),
+    0 1px 2px var(--glass-shadow);
+}
+@utility glass-strong {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    0 6px 16px -8px var(--glass-shadow);
+}
+@utility glass-soft {
+  background: var(--glass-soft);
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-hi);
 }
 
 @keyframes dotPulse {

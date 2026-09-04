@@ -42,7 +42,7 @@ export function MonthlyTargetStep({ onComplete, onBack }: MonthlyTargetStepProps
         </p>
       </header>
 
-      <div className="flex items-start gap-3 rounded-xl border border-border bg-card/60 p-3">
+      <div className="flex items-start gap-3 rounded-xl glass-soft p-3">
         <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-background text-muted-foreground">
           <Info className="h-3 w-3" />
         </div>

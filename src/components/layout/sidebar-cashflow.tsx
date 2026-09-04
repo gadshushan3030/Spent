@@ -28,7 +28,7 @@ export function SidebarCashflow() {
   return (
     <Link
       href="/"
-      className="mx-1 block rounded-xl border border-sidebar-border bg-sidebar-accent/40 px-3 py-3 transition-colors duration-200 hover:bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:hidden"
+      className="mx-1 block rounded-2xl glass-soft px-3 py-3 transition-colors duration-200 hover:bg-[var(--glass-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring group-data-[collapsible=icon]:hidden"
     >
       <div className="flex items-baseline justify-between">
         <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">

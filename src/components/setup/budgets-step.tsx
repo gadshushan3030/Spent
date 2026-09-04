@@ -198,7 +198,7 @@ function CategoryCell({
 
   return (
     <label
-      className="group flex min-w-0 items-center gap-1.5 rounded-lg border bg-card px-1.5 py-1.5 transition-colors"
+      className="group flex min-w-0 items-center gap-1.5 rounded-lg glass-soft px-1.5 py-1.5 transition-colors"
       style={{
         borderColor: filled ? accent : "var(--border)",
         background: filled

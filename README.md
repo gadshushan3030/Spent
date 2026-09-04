@@ -20,6 +20,9 @@ Encrypted. AI-categorized. Yours.
 
 </div>
 
+> [!NOTE]
+> **Origin and credit.** Spent was created by [Shay Avivi (Shaya16)](https://github.com/Shaya16) at [Shaya16/Spent](https://github.com/Shaya16/Spent). This repository is a fork maintained by [gadshushan3030](https://github.com/gadshushan3030); the architecture, scrapers, categorization pipeline and most of the codebase are Shay's work. Upstream docs: [shaya16.github.io/Spent](https://shaya16.github.io/Spent/).
+
 > [!WARNING]
 > Personal, local-only tool. Scraping financial institutions may violate their Terms of Service. Use only for your own accounts on your own machine. **Do not deploy as a hosted service.**
 
@@ -366,6 +369,8 @@ MIT
 ## Acknowledgments
 
 Built on the shoulders of:
+
+- [Shay Avivi (Shaya16)](https://github.com/Shaya16), the original author of Spent. This repo is a fork of [Shaya16/Spent](https://github.com/Shaya16/Spent)
 
 - [`israeli-bank-scrapers`](https://github.com/eshaham/israeli-bank-scrapers) — the heart of every bank integration
 - [Next.js 16](https://nextjs.org/) and [React 19](https://react.dev/)

@@ -233,7 +233,7 @@ export function BankStep({ onComplete }: BankStepProps) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: -16, height: 0 }}
                       transition={{ duration: 0.22 }}
-                      className="flex items-center gap-3 rounded-xl border border-border bg-card p-3"
+                      className="flex items-center gap-3 rounded-xl glass-soft p-3"
                     >
                       <ProviderBadge
                         color={info.color}
@@ -318,7 +318,7 @@ function PickerCard({
   onPick: (id: string) => void;
 }) {
   return (
-    <div className="w-full rounded-2xl border border-border bg-card p-5 text-left shadow-sm">
+    <div className="w-full rounded-3xl glass p-5 text-left">
       <div className="mb-3 flex items-baseline justify-between">
         <div className="text-[11px] font-bold tracking-tight">
           ספקים נתמכים · {total}
@@ -416,7 +416,7 @@ function FilterPills({
     { id: "card", label: "כרטיסים" },
   ];
   return (
-    <div className="flex gap-0.5 rounded-full border border-border bg-background p-0.5">
+    <div className="flex gap-0.5 rounded-full glass p-0.5">
       {options.map((o) => {
         const active = value === o.id;
         return (
@@ -526,7 +526,7 @@ function CredentialForm({
   };
 
   return (
-    <div className="w-full rounded-2xl border border-border bg-card p-6 text-left shadow-sm">
+    <div className="w-full rounded-3xl glass p-6 text-left">
       <div className="mb-5 flex items-center gap-3 border-b border-border/60 pb-4">
         <ProviderBadge
           color={info.color}

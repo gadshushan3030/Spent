@@ -256,7 +256,7 @@ function ProviderRow({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5 text-left transition-colors hover:bg-accent/40"
+      className="flex items-center gap-3 rounded-xl glass-soft px-3 py-2.5 text-left transition-colors hover:bg-[var(--glass-strong)]"
       style={{
         borderColor: selected ? tint.mid : "var(--border)",
         background: selected
@@ -315,7 +315,7 @@ function ClaudeConfig({
   setShowKey: (v: boolean) => void;
 }) {
   return (
-    <div className="space-y-2 rounded-xl border border-border bg-card/60 p-4">
+    <div className="space-y-2 rounded-xl glass-soft p-4">
       <div className="flex items-center justify-between gap-2">
         <Label htmlFor="claude-api-key" className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground">
           API key
@@ -381,7 +381,7 @@ function OllamaConfig({
   const allModels: MergedOllamaModel[] = mergeOllamaModels(installedModels);
 
   return (
-    <div className="space-y-3 rounded-xl border border-border bg-card/60 p-4">
+    <div className="space-y-3 rounded-xl glass-soft p-4">
       <div
         className="flex items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium"
         style={{
@@ -437,7 +437,7 @@ function OllamaConfig({
               key={m.name}
               type="button"
               onClick={() => setModel(m.name)}
-              className={`relative rounded-lg border bg-background p-2 text-left transition-colors ${
+              className={`relative rounded-lg glass-soft p-2 text-left transition-colors ${
                 model === m.name
                   ? "border-primary bg-primary/5"
                   : "border-border hover:border-primary/40"
@@ -484,7 +484,7 @@ function OllamaConfig({
 
 function ManualNote() {
   return (
-    <div className="rounded-xl border border-border bg-card/60 p-4 text-[12px] leading-relaxed text-muted-foreground">
+    <div className="rounded-xl glass-soft p-4 text-[12px] leading-relaxed text-muted-foreground">
       Spent will leave transactions <span className="text-foreground">uncategorized</span>;
       you can assign categories from the transactions table any time. Switch to
       Claude or Ollama later in{" "}
@@ -528,7 +528,7 @@ function OllamaPullCTA({
         ? Math.round((pullState.completed / pullState.total) * 100)
         : 0;
     return (
-      <div className="space-y-2 rounded-lg border border-border bg-background/50 p-2.5">
+      <div className="space-y-2 rounded-lg glass-soft p-2.5">
         <div className="flex items-center justify-between text-[12px]">
           <span className="font-medium">
             {pullState.status === "starting"

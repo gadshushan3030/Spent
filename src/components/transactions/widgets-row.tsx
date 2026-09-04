@@ -47,7 +47,7 @@ interface TopMerchantsProps {
 
 function TopMerchants({ merchants, loading }: TopMerchantsProps) {
   return (
-    <div className="h-full rounded-2xl border border-border bg-card p-5">
+    <div className="h-full rounded-2xl glass p-5">
       <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
         ספקים מובילים
       </div>
@@ -113,7 +113,7 @@ function PendingReview({ count, loading }: PendingReviewProps) {
 
   if (!loading && count === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-5">
+      <div className="rounded-2xl glass p-5">
         <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
           ממתין לבדיקה
         </div>
@@ -126,7 +126,7 @@ function PendingReview({ count, loading }: PendingReviewProps) {
 
   return (
     <>
-      <div className="rounded-2xl border border-border bg-card p-5">
+      <div className="rounded-2xl glass p-5">
         <div className="flex items-center justify-between">
           <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
             ממתין לבדיקה
@@ -185,7 +185,7 @@ interface OutliersProps {
 
 function Outliers({ largestIncome, largestExpense, loading }: OutliersProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
+    <div className="rounded-2xl glass p-5">
       <div className="text-xs font-bold uppercase tracking-[0.08em] text-muted-foreground">
         חריגות
       </div>

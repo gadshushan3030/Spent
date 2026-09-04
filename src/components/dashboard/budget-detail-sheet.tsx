@@ -395,7 +395,7 @@ function DetailContent({ data }: { data: CategoryDetail }) {
               <Plus className="h-3.5 w-3.5" /> הוסף
             </Button>
           </div>
-          <div className="overflow-hidden rounded-2xl border bg-card">
+          <div className="overflow-hidden rounded-2xl glass-soft">
             {data.transactions.length === 0 ? (
               <div className="p-6 text-center text-sm text-muted-foreground">
                 אין עסקאות בקטגוריה זו לתקופה זו.
@@ -749,7 +749,7 @@ function BudgetStat({
 }
 
 function Card({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-2xl border border-border bg-card p-4">{children}</div>;
+  return <div className="rounded-2xl glass-soft p-4">{children}</div>;
 }
 
 function CardLabel({ children }: { children: React.ReactNode }) {

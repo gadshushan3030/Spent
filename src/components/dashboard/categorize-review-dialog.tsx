@@ -254,7 +254,7 @@ function ProposalRow({
   return (
     <div
       className={`flex items-start justify-between gap-4 rounded-xl border p-3 transition-colors ${
-        approved ? "border-primary/40 bg-primary/5" : "border-border bg-card"
+        approved ? "border-primary/40 bg-primary/5" : "glass-soft"
       }`}
     >
       <div className="min-w-0 flex-1">

@@ -16,7 +16,7 @@ export function CardShell({ label, action, children, className }: CardShellProps
   return (
     <div
       className={cn(
-        "flex h-full flex-col rounded-3xl border border-border bg-card p-5 md:p-6",
+        "flex h-full flex-col rounded-3xl glass p-5 md:p-6",
         className
       )}
     >

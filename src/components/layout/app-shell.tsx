@@ -27,8 +27,8 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <header className="sticky top-0 z-10 border-b border-border/40 bg-background/80 backdrop-blur">
-      <div className="flex h-14 items-center justify-between gap-4 px-4 md:h-16 md:px-6 lg:px-8">
+    <header className="sticky top-0 z-10 px-4 pt-4 md:px-6 lg:px-8">
+      <div className="flex h-14 items-center justify-between gap-4 rounded-full glass px-4 ps-5 md:h-16 md:px-3 md:ps-6">
         <div className="flex min-w-0 items-center gap-3">
           <SidebarTrigger className="-mr-1 md:hidden" />
           <h1 className="truncate font-serif text-2xl leading-none tracking-tight">

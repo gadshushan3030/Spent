@@ -174,7 +174,7 @@ export function CategoryGrid({
     return (
       <div className="space-y-5">
         <h2 className="font-serif text-2xl">תקציבים</h2>
-        <div className="rounded-3xl border border-border bg-card p-10 md:p-14">
+        <div className="rounded-3xl glass p-10 md:p-14">
           <div className="mx-auto max-w-md text-center">
             <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
               <svg
@@ -264,7 +264,7 @@ export function CategoryGrid({
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground">
+        <div className="rounded-2xl glass p-10 text-center text-sm text-muted-foreground">
           אין קטגוריות התואמות לסינון זה.
         </div>
       ) : (

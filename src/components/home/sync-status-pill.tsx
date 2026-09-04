@@ -115,7 +115,7 @@ export function SyncStatusPill({ items, nextScheduledSync }: Props) {
       onClick={handleClick}
       title={tooltip || undefined}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full bg-card px-3 py-1.5 text-xs ring-1 transition-colors hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "inline-flex items-center gap-2 rounded-full glass-soft px-3 py-1.5 text-xs ring-1 transition-colors hover:bg-[var(--glass-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         styles.text,
         styles.ring
       )}

@@ -66,7 +66,7 @@ export function AppSidebar() {
   const uncategorized = home?.needsAttention?.uncategorized ?? 0;
 
   return (
-    <Sidebar collapsible="icon" side="right">
+    <Sidebar collapsible="icon" side="right" variant="floating">
       <SidebarHeader className="px-3 pb-1 pt-3">
         <Link
           href="/"

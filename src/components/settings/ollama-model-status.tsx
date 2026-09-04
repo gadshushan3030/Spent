@@ -205,7 +205,7 @@ function ModelStatusInner({
 
   if (reachable === false) {
     return (
-      <div className="space-y-3 rounded-xl border border-border bg-card/60 p-4">
+      <div className="space-y-3 rounded-xl glass-soft p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
             <div className="text-sm font-medium">עדיין אין לך Ollama?</div>

@@ -88,7 +88,7 @@ export function CompleteStep({ onFinish }: CompleteStepProps) {
         initial={{ y: 12, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="rounded-2xl bg-card p-5 text-left"
+        className="rounded-3xl glass p-5 text-left"
       >
         <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
           סיכום הגדרה
@@ -178,7 +178,7 @@ function ImportProgress() {
       initial={{ y: 12, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.4 }}
-      className="rounded-2xl bg-card p-4 text-left"
+      className="rounded-2xl glass p-4 text-left"
     >
       {steps.map((s, i) => (
         <div

@@ -185,7 +185,7 @@ function BudgetSection({
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         תקציב
       </div>
-      <div className="mt-3 rounded-xl border border-border bg-card p-4">
+      <div className="mt-3 rounded-xl glass-soft p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1 space-y-1">
             <Label
@@ -283,7 +283,7 @@ function GroupSection({
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         קבוצה
       </div>
-      <div className="mt-3 rounded-xl border border-border bg-card p-4 space-y-2">
+      <div className="mt-3 rounded-xl glass-soft p-4 space-y-2">
         <Label>קבוצת אב</Label>
         <Select
           value={current}
@@ -357,7 +357,7 @@ function DescriptionSection({ category }: { category: Category }) {
       <div className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
         רמז AI
       </div>
-      <div className="mt-3 rounded-xl border border-border bg-card p-4 space-y-2">
+      <div className="mt-3 rounded-xl glass-soft p-4 space-y-2">
         <Label htmlFor={`desc-${category.id}`}>תיאור</Label>
         <textarea
           id={`desc-${category.id}`}

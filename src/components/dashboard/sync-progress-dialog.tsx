@@ -123,7 +123,7 @@ export function SyncProgressDialog({
         </div>
 
         {summary && (
-          <div className="mx-6 mb-4 mt-2 overflow-hidden rounded-xl border border-border bg-card p-4">
+          <div className="mx-6 mb-4 mt-2 overflow-hidden rounded-xl glass-soft p-4">
             <div className="flex items-center justify-around gap-3 text-center">
               <SummaryStat label="חדש" value={summary.added} accent />
               <Divider />
@@ -183,7 +183,7 @@ function ProviderRowView({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border bg-card p-3 transition-all duration-300",
+        "relative overflow-hidden rounded-xl glass-soft p-3 transition-all duration-300",
         row.status === "running" &&
           "shadow-[0_0_0_1px_color-mix(in_oklch,var(--ring)_30%,transparent)]",
         isInteractive2fa &&

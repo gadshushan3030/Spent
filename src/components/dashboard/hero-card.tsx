@@ -13,7 +13,7 @@ interface HeroCardProps {
 export function HeroCard({ data, loading }: HeroCardProps) {
   if (loading || !data) {
     return (
-      <div className="rounded-3xl border border-border bg-card p-8">
+      <div className="rounded-3xl glass p-8">
         <Skeleton className="h-40 w-full" />
       </div>
     );
@@ -128,7 +128,7 @@ export function HeroCard({ data, loading }: HeroCardProps) {
   );
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-8 lg:p-10">
+    <div className="relative overflow-hidden rounded-3xl glass p-6 md:p-8 lg:p-10">
       {hasBudget ? (
         <div className="grid gap-6 md:grid-cols-[200px_1fr] md:gap-10 lg:grid-cols-[240px_1fr]">
           <div className="flex flex-col items-center justify-center gap-2">

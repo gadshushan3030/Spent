@@ -67,7 +67,7 @@ export function SetupWizard({ mode = "first-run" }: { mode?: SetupMode }) {
   }
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="relative min-h-screen">
       <header className="relative z-10 mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-6 md:px-8">
         <BrandMark />
         <DotStepper step={step} steps={steps} />
